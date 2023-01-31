@@ -30,9 +30,10 @@ public class GameManager_script : MonoBehaviour
     public GameObject detectedObject = null;
 
     public float dragHeight = 0.25f;
+    public GameObject seed;
     void Start()
     {
-
+        seed.SetActive(true);
     }
 
     // Update is called once per frame
