@@ -28,15 +28,6 @@ public partial class @PlayerControllerInputAction : IInputActionCollection2, IDi
             ""id"": ""4cfc19b9-ed8a-43c1-b358-803b4e8f30be"",
             ""actions"": [
                 {
-                    ""name"": ""Jump"",
-                    ""type"": ""Button"",
-                    ""id"": ""84255754-e7e4-402c-8d06-b124b328b1e8"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""65d4b4f4-94be-4b86-a1dc-24df6f6e60b6"",
@@ -53,20 +44,18 @@ public partial class @PlayerControllerInputAction : IInputActionCollection2, IDi
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""84255754-e7e4-402c-8d06-b124b328b1e8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""1088de65-23ed-4ac3-a57d-6129d10d2e32"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": ""2D Vector (Keyboard)"",
                     ""id"": ""80d8e0ae-521a-4525-a0da-2581fcb2a40c"",
@@ -209,6 +198,28 @@ public partial class @PlayerControllerInputAction : IInputActionCollection2, IDi
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1088de65-23ed-4ac3-a57d-6129d10d2e32"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5852c476-d794-4ce0-ad24-35b8ed44252d"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -245,9 +256,9 @@ public partial class @PlayerControllerInputAction : IInputActionCollection2, IDi
 }");
         // PlayerNormal
         m_PlayerNormal = asset.FindActionMap("PlayerNormal", throwIfNotFound: true);
-        m_PlayerNormal_Jump = m_PlayerNormal.FindAction("Jump", throwIfNotFound: true);
         m_PlayerNormal_Move = m_PlayerNormal.FindAction("Move", throwIfNotFound: true);
         m_PlayerNormal_Run = m_PlayerNormal.FindAction("Run", throwIfNotFound: true);
+        m_PlayerNormal_Jump = m_PlayerNormal.FindAction("Jump", throwIfNotFound: true);
         // PlayerRebinding
         m_PlayerRebinding = asset.FindActionMap("PlayerRebinding", throwIfNotFound: true);
         m_PlayerRebinding_Newaction = m_PlayerRebinding.FindAction("New action", throwIfNotFound: true);
@@ -310,16 +321,16 @@ public partial class @PlayerControllerInputAction : IInputActionCollection2, IDi
     // PlayerNormal
     private readonly InputActionMap m_PlayerNormal;
     private IPlayerNormalActions m_PlayerNormalActionsCallbackInterface;
-    private readonly InputAction m_PlayerNormal_Jump;
     private readonly InputAction m_PlayerNormal_Move;
     private readonly InputAction m_PlayerNormal_Run;
+    private readonly InputAction m_PlayerNormal_Jump;
     public struct PlayerNormalActions
     {
         private @PlayerControllerInputAction m_Wrapper;
         public PlayerNormalActions(@PlayerControllerInputAction wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Jump => m_Wrapper.m_PlayerNormal_Jump;
         public InputAction @Move => m_Wrapper.m_PlayerNormal_Move;
         public InputAction @Run => m_Wrapper.m_PlayerNormal_Run;
+        public InputAction @Jump => m_Wrapper.m_PlayerNormal_Jump;
         public InputActionMap Get() { return m_Wrapper.m_PlayerNormal; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -329,28 +340,28 @@ public partial class @PlayerControllerInputAction : IInputActionCollection2, IDi
         {
             if (m_Wrapper.m_PlayerNormalActionsCallbackInterface != null)
             {
-                @Jump.started -= m_Wrapper.m_PlayerNormalActionsCallbackInterface.OnJump;
-                @Jump.performed -= m_Wrapper.m_PlayerNormalActionsCallbackInterface.OnJump;
-                @Jump.canceled -= m_Wrapper.m_PlayerNormalActionsCallbackInterface.OnJump;
                 @Move.started -= m_Wrapper.m_PlayerNormalActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_PlayerNormalActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_PlayerNormalActionsCallbackInterface.OnMove;
                 @Run.started -= m_Wrapper.m_PlayerNormalActionsCallbackInterface.OnRun;
                 @Run.performed -= m_Wrapper.m_PlayerNormalActionsCallbackInterface.OnRun;
                 @Run.canceled -= m_Wrapper.m_PlayerNormalActionsCallbackInterface.OnRun;
+                @Jump.started -= m_Wrapper.m_PlayerNormalActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_PlayerNormalActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_PlayerNormalActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_PlayerNormalActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Jump.started += instance.OnJump;
-                @Jump.performed += instance.OnJump;
-                @Jump.canceled += instance.OnJump;
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
                 @Run.started += instance.OnRun;
                 @Run.performed += instance.OnRun;
                 @Run.canceled += instance.OnRun;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -390,9 +401,9 @@ public partial class @PlayerControllerInputAction : IInputActionCollection2, IDi
     public PlayerRebindingActions @PlayerRebinding => new PlayerRebindingActions(this);
     public interface IPlayerNormalActions
     {
-        void OnJump(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
     public interface IPlayerRebindingActions
     {
