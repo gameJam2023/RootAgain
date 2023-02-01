@@ -62,3 +62,9 @@ crashlytics-build.properties
 # Visual Studio Config
 .vsconfig
 
+# Ignore Unity Editor Plugin
+./Assets/Feel
+
+./Assets/Plugins
+
+./Assets/TextMesh project
