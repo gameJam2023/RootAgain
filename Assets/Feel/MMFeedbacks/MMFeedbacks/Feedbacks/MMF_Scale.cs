@@ -29,6 +29,8 @@ namespace MoreMountains.Feedbacks
 		public override string RequiresSetupText { get { return "This feedback requires that an AnimateScaleTarget be set to be able to work properly. You can set one below."; } }
 		public override bool HasCustomInspectors { get { return true; } }
 		#endif
+		public override bool HasAutomatedTargetAcquisition => true;
+		protected override void AutomateTargetAcquisition() => AnimateScaleTarget = FindAutomatedTarget<Transform>();
 
 		[MMFInspectorGroup("Scale Mode", true, 12, true)]
 		/// the mode this feedback should operate on
@@ -193,7 +195,7 @@ namespace MoreMountains.Feedbacks
 
 			_initialScale = AnimateScaleTarget.localScale;
 			_newScale = _initialScale;
-
+			IsPlaying = true;
 			while ((journey >= 0) && (journey <= FeedbackDuration) && (FeedbackDuration > 0))
 			{
 				float percent = Mathf.Clamp01(journey / FeedbackDuration);
@@ -231,6 +233,7 @@ namespace MoreMountains.Feedbacks
 
 			AnimateScaleTarget.localScale = NormalPlayDirection ? DestinationScale : _initialScale;
 			_coroutine = null;
+			IsPlaying = false;
 			yield return null;
 		}
 
@@ -266,6 +269,8 @@ namespace MoreMountains.Feedbacks
             
 			_initialScale = targetTransform.localScale;
             
+			IsPlaying = true;
+			
 			while ((journey >= 0) && (journey <= duration) && (duration > 0))
 			{
 				vector = Vector3.zero;
@@ -377,6 +382,7 @@ namespace MoreMountains.Feedbacks
 			}
             
 			targetTransform.localScale = vector;
+			IsPlaying = false;
 			_coroutine = null;
 			yield return null;
 		}
@@ -392,7 +398,7 @@ namespace MoreMountains.Feedbacks
 			{
 				return;
 			}
-            
+			IsPlaying = false;
 			Owner.StopCoroutine(_coroutine);
 			_coroutine = null;
             

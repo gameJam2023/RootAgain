@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using MoreMountains.Tools;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,22 +20,7 @@ namespace MoreMountains.Feedbacks
 		{
 			get
 			{
-				float total = 0f;
-				if (FeedbacksList == null)
-				{
-					return InitialDelay;
-				}
-				foreach (MMF_Feedback feedback in FeedbacksList)
-				{
-					if ((feedback != null) && (feedback.Active))
-					{
-						if (total < feedback.TotalDuration)
-						{
-							total = feedback.TotalDuration;    
-						}
-					}
-				}
-				return InitialDelay + total;
+				return _cachedTotalDuration;
 			}
 		}
 
@@ -47,6 +33,7 @@ namespace MoreMountains.Feedbacks
 		public bool SkippingToTheEnd { get; protected set; }
         
 		protected Type _t;
+		protected float _cachedTotalDuration;
         
 		#endregion
         
@@ -72,10 +59,11 @@ namespace MoreMountains.Feedbacks
 			{
 				Initialization();
 			}
-			
+
 			InitializeFeedbackList();
 			ExtraInitializationChecks();
 			CheckForLoops();
+			ComputeCachedTotalDuration();
 		}
 
 		/// <summary>
@@ -126,14 +114,33 @@ namespace MoreMountains.Feedbacks
 			{
 				MMSetFeedbackRangeCenterEvent.Register(OnMMSetFeedbackRangeCenterEvent);	
 			}
-			if (AutoPlayOnEnable && Application.isPlaying)
-			{
-				PlayFeedbacks();
-			}
 			foreach (MMF_Feedback feedback in FeedbacksList)
 			{
 				feedback.CacheRequiresSetup();
 			}
+			if (AutoPlayOnEnable && Application.isPlaying)
+			{
+				// if we're in the very first frames, we delay our play for 2 frames to avoid Unity bugs
+				if (Time.frameCount < 2)
+				{
+					StartCoroutine(PlayFeedbacksAfterFrames(2));
+				}
+				else
+				{
+					PlayFeedbacks();
+				}
+			}
+		}
+
+		/// <summary>
+		/// A coroutine you can start to play this player's feedbacks after X frames
+		/// </summary>
+		/// <param name="framesAmount"></param>
+		/// <returns></returns>
+		public virtual IEnumerator PlayFeedbacksAfterFrames(int framesAmount)
+		{
+			yield return MMFeedbacksCoroutine.WaitForFrames(framesAmount);
+			PlayFeedbacks();
 		}
 
 		/// <summary>
@@ -152,7 +159,7 @@ namespace MoreMountains.Feedbacks
 			{
 				if (FeedbacksList[i] != null)
 				{
-					FeedbacksList[i].Initialization(this);
+					FeedbacksList[i].Initialization(this, i);
 				}                
 			}
 		}
@@ -294,10 +301,11 @@ namespace MoreMountains.Feedbacks
 			}
             
 			ResetFeedbacks();
-			this.enabled = true;
-			IsPlaying = true;
+			_lastStartFrame = Time.frameCount;
 			_startTime = GetTime();
 			_lastStartAt = _startTime;
+			this.enabled = true;
+			IsPlaying = true;
 			ComputeNewRandomDurationMultipliers();
 			_totalDuration = TotalDuration;
 			CheckForPauses();
@@ -318,6 +326,14 @@ namespace MoreMountains.Feedbacks
 				PreparePlay(position, feedbacksIntensity, forceRevert);
 			}
 		}
+		
+		/// <summary>
+		/// Use this method before every PlayFeedbacks() call ONLY if you ever need to play the same MMF Player multiple times a frame
+		/// </summary>
+		public virtual void AllowSameFramePlay()
+		{
+			_lastStartFrame = -1;
+		}
 
 		/// <summary>
 		/// Returns true if this feedback is allowed to play, false otherwise
@@ -328,6 +344,11 @@ namespace MoreMountains.Feedbacks
 		{
 			// if CanPlay is false, we're not allowed to play
 			if (!CanPlay)
+			{
+				return false;
+			}
+
+			if (Time.frameCount == _lastStartFrame)
 			{
 				return false;
 			}
@@ -396,7 +417,6 @@ namespace MoreMountains.Feedbacks
 		protected override void PreparePlay(Vector3 position, float feedbacksIntensity, bool forceRevert = false)
 		{
 			Events.TriggerOnPlay(this);
-
 			_holdingMax = 0f;
 			CheckForPauses();
 			
@@ -460,10 +480,10 @@ namespace MoreMountains.Feedbacks
 					return;
 				}
 				IsPlaying = false;
-				Events.TriggerOnComplete(this);
 				ApplyAutoRevert();
 				this.enabled = false;
 				_shouldStop = false;
+				Events.TriggerOnComplete(this);
 			}
 			if (IsPlaying)
 			{
@@ -999,6 +1019,99 @@ namespace MoreMountains.Feedbacks
 		#endregion
 
 		#region ACCESS
+		
+		public enum AccessMethods { First, Previous, Closest, Next, Last }
+		
+		/// <summary>
+		/// Returns the first feedback found in this player's list based on the chosen method and type
+		/// First : first feedback of the matching type in the list, from top to bottom
+		/// Previous : first feedback of the matching type located before (so above) the feedback at the reference index
+		/// Closest : first feedback of the matching type located before or after the feedback at the reference index
+		/// Next : first feedback of the matching type located after (so below) the feedback at the reference index
+		/// First : last feedback of the matching type in the list, from top to bottom
+		/// </summary>
+		/// <param name="method"></param>
+		/// <param name="referenceIndex"></param>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		public virtual T GetFeedbackOfType<T>(AccessMethods method, int referenceIndex) where T:MMF_Feedback
+		{
+			_t = typeof(T);
+
+			referenceIndex = Mathf.Clamp(referenceIndex, 0, FeedbacksList.Count);
+			
+			switch (method)
+			{
+				case AccessMethods.First:
+					for (int i = 0; i < FeedbacksList.Count; i++)
+					{
+						if (Check(i)) { return (T)FeedbacksList[i]; }
+					}
+					break;
+				case AccessMethods.Previous:
+					for (int i = referenceIndex; i >= 0; i--)
+					{
+						if (Check(i)) { return (T)FeedbacksList[i]; }
+					}
+					break;
+				case AccessMethods.Closest:
+					int closestIndexBack = referenceIndex;
+					int closestIndexForward = referenceIndex;
+					for (int i = referenceIndex; i >= 0; i--)
+					{
+						if (Check(i))
+						{
+							closestIndexBack = i;
+							break;
+						}
+					}
+
+					for (int i = referenceIndex; i < FeedbacksList.Count; i++)
+					{
+						if (Check(i))
+						{
+							closestIndexForward = i;
+							break;
+						}
+					}
+
+					int foundIndex;
+					if ((closestIndexBack != referenceIndex) || (closestIndexForward != referenceIndex))
+					{
+						if (closestIndexBack == referenceIndex) { foundIndex = closestIndexForward; }
+						else if (closestIndexForward == referenceIndex) { foundIndex = closestIndexBack; }
+						else
+						{
+							int distanceBack = Mathf.Abs(referenceIndex - closestIndexBack);
+							int distanceForward = Mathf.Abs(referenceIndex - closestIndexForward);
+							foundIndex = (distanceBack > distanceForward) ? closestIndexForward : closestIndexBack;
+						}
+						return (T)FeedbacksList[foundIndex];
+					}
+					else
+					{
+						return null;
+					}
+				case AccessMethods.Next:
+					for (int i = referenceIndex; i < FeedbacksList.Count; i++)
+					{
+						if (Check(i)) { return (T)FeedbacksList[i]; }
+					}
+					break;
+				case AccessMethods.Last:
+					for (int i = FeedbacksList.Count - 1; i >= 0; i--)
+					{
+						if (Check(i)) { return (T)FeedbacksList[i]; }
+					}
+					break;
+			}
+			return null;
+
+			bool Check(int i)
+			{
+				return (FeedbacksList[i].GetType() == _t);
+			}
+		}
 
 		/// <summary>
 		/// Returns the first feedback of the searched type on this MMF_Player
@@ -1132,6 +1245,8 @@ namespace MoreMountains.Feedbacks
 			{
 				return;
 			}
+
+			ComputeCachedTotalDuration();
             
 			DurationMultiplier = Mathf.Clamp(DurationMultiplier, _smallValue, Single.MaxValue);
             
@@ -1148,6 +1263,149 @@ namespace MoreMountains.Feedbacks
 					FeedbacksList[i].OnValidate();	
 				}
 			}
+		}
+
+		/// <summary>
+		/// Computes the total duration of the player's sequence of feedbacks
+		/// </summary>
+		protected virtual void ComputeCachedTotalDuration()
+		{
+			float total = 0f;
+			if (FeedbacksList == null)
+			{
+				_cachedTotalDuration = InitialDelay;
+				return;
+			}
+			
+			CheckForPauses();
+
+			if (!_pauseFound)
+			{
+				foreach (MMF_Feedback feedback in FeedbacksList)
+				{
+					if (feedback.TotalDuration == 0f)
+					{
+						feedback.ComputeTotalDuration();
+					}
+					if ((feedback != null) && (feedback.Active) && feedback.ShouldPlayInThisSequenceDirection)
+					{
+						if (total < feedback.TotalDuration)
+						{
+							total = feedback.TotalDuration;    
+						}
+					}
+				}
+			}
+			else
+			{
+				int lastLooperStart = 0;
+				int lastLoopFoundAt = 0;
+				int lastPauseFoundAt = 0;
+				int loopsLeft = 0;
+				int iterations = 0;
+				int maxIterationsSafety = 1000;
+				float currentPauseDelay = 0f;
+				int i = (Direction == Directions.TopToBottom) ? 0 : Feedbacks.Count-1;
+				float intermediateTotal = 0f;
+				while ((i >= 0) && (i < FeedbacksList.Count) && (iterations < maxIterationsSafety))
+				{
+					iterations++;
+					
+					if ((FeedbacksList[i] != null) && FeedbacksList[i].Active && FeedbacksList[i].ShouldPlayInThisSequenceDirection)
+					{
+						if (FeedbacksList[i].TotalDuration == 0f)
+						{
+							FeedbacksList[i].ComputeTotalDuration();
+						}
+						if (FeedbacksList[i].Pause != null)
+						{
+							// pause
+							if (FeedbacksList[i].HoldingPause)
+							{
+								intermediateTotal += (FeedbacksList[i] as MMF_Pause).PauseDuration;
+								total += intermediateTotal;
+								intermediateTotal = 0f;
+							}
+							else
+							{
+								currentPauseDelay += (FeedbacksList[i] as MMF_Pause).PauseDuration;
+							}
+							
+							//loops
+							if (FeedbacksList[i].LooperStart)
+							{
+								lastLooperStart = i;
+							}
+
+							if (!FeedbacksList[i].LooperPause)
+							{
+								lastPauseFoundAt = i;
+							}
+
+							if (FeedbacksList[i].LooperPause && ((FeedbacksList[i] as MMF_Looper).NumberOfLoops > 0))
+							{
+								if (i == lastLoopFoundAt)
+								{
+									loopsLeft--;
+									if (loopsLeft <= 0)
+									{
+										i += (Direction == Directions.TopToBottom) ? 1 : -1;
+										continue;
+									}
+								}
+								else
+								{
+									lastLoopFoundAt = i;
+									loopsLeft = (FeedbacksList[i] as MMF_Looper).NumberOfLoops - 1;
+								}
+								
+								if ((FeedbacksList[i] as MMF_Looper).InfiniteLoop)
+								{
+									_cachedTotalDuration = 999f; 
+									return;
+								}
+
+								if ((FeedbacksList[i] as MMF_Looper).LoopAtLastPause)
+								{
+									i = lastPauseFoundAt;
+									total += intermediateTotal;
+									intermediateTotal = 0f;
+									currentPauseDelay = 0f;
+									continue;
+								}
+								else if ((FeedbacksList[i] as MMF_Looper).LoopAtLastLoopStart)
+								{
+									i = lastLooperStart;
+									total += intermediateTotal;
+									intermediateTotal = 0f;
+									currentPauseDelay = 0f;
+									continue;
+								}
+								else
+								{
+									i = 0;
+									total += intermediateTotal;
+									intermediateTotal = 0f;
+									currentPauseDelay = 0f;
+									continue;
+								}
+							}	
+						}
+						else
+						{
+							float feedbackDuration = FeedbacksList[i].TotalDuration + currentPauseDelay;
+							if (intermediateTotal < feedbackDuration)
+							{
+								intermediateTotal = feedbackDuration;    
+							}
+						}
+					}
+					
+					i += (Direction == Directions.TopToBottom) ? 1 : -1;
+				}
+				total += intermediateTotal;
+			}
+			_cachedTotalDuration = InitialDelay + total;
 		}
 
 		/// <summary>

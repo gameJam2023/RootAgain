@@ -16,7 +16,7 @@ namespace MoreMountains.Feedbacks
 
 		public const string _randomnessGroupName = "Feedback Randomness";
 		public const string _rangeGroupName = "Feedback Range";
-
+		
 		[MMFInspectorGroup("Feedback Settings", true, 0, false, true)]
 		/// whether or not this feedback is active
 		[Tooltip("whether or not this feedback is active")]
@@ -61,8 +61,12 @@ namespace MoreMountains.Feedbacks
 		/// a number of timing-related values (delay, repeat, etc)
 		[Tooltip("a number of timing-related values (delay, repeat, etc)")]
 		public MMFeedbackTiming Timing;
-
-		[MMFInspectorGroup(_randomnessGroupName, true, 58)]
+		
+		/// a set of settings letting you define automated target acquisition for this feedback, to (for example) automatically grab the target on this game object, or a parent, a child, or on a reference holder
+		[Tooltip("a set of settings letting you define automated target acquisition for this feedback, to (for example) automatically grab the target on this game object, or a parent, a child, or on a reference holder")]
+		public MMFeedbackTargetAcquisition AutomatedTargetAcquisition;
+		
+		[MMFInspectorGroup(_randomnessGroupName, true, 58, false, true)]
 		/// if this is true, intensity will be multiplied by a random value on play, picked between RandomMultiplier.x and RandomMultiplier.y
 		[Tooltip(
 			"if this is true, intensity will be multiplied by a random value on play, picked between RandomMultiplier.x and RandomMultiplier.y")]
@@ -139,6 +143,11 @@ namespace MoreMountains.Feedbacks
 
 		/// if this is true, the Randomness group will be displayed, otherwise it'll be hidden        
 		public virtual bool HasRandomness => false;
+
+		/// whether or not this feedback can automatically grab the target on this game object, or a parent, a child, or on a reference holder
+		public virtual bool HasAutomatedTargetAcquisition => false;
+		/// when in forced reference mode, this will contain the forced reference holder that will be used (usually set by itself)
+		public virtual MMF_ReferenceHolder ForcedReferenceHolder { get; set; }
 
 		/// if this is true, the Range group will be displayed, otherwise it'll be hidden        
 		public virtual bool HasRange => false;
@@ -291,33 +300,7 @@ namespace MoreMountains.Feedbacks
 		{
 			get
 			{
-				if ((Timing != null) && (!Timing.ContributeToTotalDuration))
-				{
-					return 0f;
-				}
-
-				float totalTime = 0f;
-
-				if (Timing == null)
-				{
-					return 0f;
-				}
-
-				if (Timing.InitialDelay != 0)
-				{
-					totalTime += ApplyTimeMultiplier(Timing.InitialDelay);
-				}
-
-				totalTime += FeedbackDuration;
-
-				if (Timing.NumberOfRepeats != 0)
-				{
-					float delayBetweenRepeats = ApplyTimeMultiplier(Timing.DelayBetweenRepeats);
-
-					totalTime += (Timing.NumberOfRepeats * delayBetweenRepeats);
-				}
-
-				return totalTime;
+				return _totalDuration;
 			}
 		}
 
@@ -328,18 +311,24 @@ namespace MoreMountains.Feedbacks
 		/// This flag will be used to display a warning icon in the inspector if the feedback is not ready to be played.
 		/// </summary>
 		public bool RequiresSetup => _requiresSetup;
-
 		public string RequiredTarget => _requiredTarget;
 
 		public virtual void CacheRequiresSetup()
 		{
 			_requiresSetup = EvaluateRequiresSetup();
+			if (_requiresSetup && HasAutomatedTargetAcquisition && (AutomatedTargetAcquisition != null) && (AutomatedTargetAcquisition.Mode != MMFeedbackTargetAcquisition.Modes.None))
+			{
+				_requiresSetup = false;
+			}
 			_requiredTarget = RequiredTargetText == "" ? "" : "[" + RequiredTargetText + "]";
 		}
-
+		/// if this is true, group inspectors will be displayed within this feedback
 		public virtual bool DrawGroupInspectors => true;
-
+		/// if this is true, the feedback will be displayed in the MMF Player's list with a full color background, as opposed to just a small line on the left
+		public virtual bool DisplayFullHeaderColor => false;
+		/// defines the setup text that will be displayed on the feedback, should setup be required
 		public virtual string RequiresSetupText => "This feedback requires some additional setup.";
+		/// the text used to describe the required target
 		public virtual string RequiredTargetText => "";
 
 		/// <summary>
@@ -400,6 +389,8 @@ namespace MoreMountains.Feedbacks
 		protected int CurrentSequenceIndex = 0;
 		protected float LastBeatTimestamp = 0f;
 		protected MMChannelData _channelData;
+		protected float _totalDuration = 0f;
+		protected int _indexInOwnerFeedbackList = 0;
 
 		#endregion Properties
 
@@ -409,27 +400,93 @@ namespace MoreMountains.Feedbacks
 		/// Initializes the feedback and its timing related variables
 		/// </summary>
 		/// <param name="owner"></param>
-		public virtual void Initialization(MMF_Player owner)
+		public virtual void Initialization(MMF_Player owner, int index)
 		{
 			if (Timing == null)
 			{
 				Timing = new MMFeedbackTiming();
 			}
 
+			SetIndexInFeedbacksList(index);
 			_lastPlayTimestamp = -1f;
 			_initialized = true;
 			Owner = owner;
 			_playsLeft = Timing.NumberOfRepeats + 1;
 			_channelData = new MMChannelData(ChannelMode, Channel, MMChannelDefinition);
-
+			AutomateTargetAcquisitionInternal();
 			SetInitialDelay(Timing.InitialDelay);
 			SetDelayBetweenRepeats(Timing.DelayBetweenRepeats);
 			SetSequence(Timing.Sequence);
-
 			CustomInitialization(owner);
 		}
 
+		/// <summary>
+		/// Lets you specify at what index this feedback is in the list - use carefully (or don't use at all)
+		/// </summary>
+		/// <param name="index"></param>
+		public virtual void SetIndexInFeedbacksList(int index)
+		{
+			_indexInOwnerFeedbackList = index;
+		}
+
 		#endregion Initialization
+		
+		#region Automation
+		
+		/// <summary>
+		/// Performs automated target acquisition, if needed
+		/// </summary>
+		protected virtual void AutomateTargetAcquisitionInternal()
+		{
+			if (!HasAutomatedTargetAcquisition)
+			{
+				return;
+			}
+
+			if (AutomatedTargetAcquisition.Mode == MMFeedbackTargetAcquisition.Modes.None)
+			{
+				return;
+			}
+
+			AutomateTargetAcquisition();
+		}
+
+		/// <summary>
+		/// Lets you force target acquisition, outside of initialization where it usually occurs
+		/// </summary>
+		public virtual void ForceAutomateTargetAcquisition()
+		{
+			AutomateTargetAcquisition();
+		}
+
+		/// <summary>
+		/// A method meant to be implemented per feedback letting you specify what happens (usually setting a target)
+		/// </summary>
+		protected virtual void AutomateTargetAcquisition()
+		{
+			
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		protected virtual GameObject FindAutomatedTargetGameObject()
+		{
+			return MMFeedbackTargetAcquisition.FindAutomatedTargetGameObject(AutomatedTargetAcquisition, Owner, _indexInOwnerFeedbackList);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		protected virtual T FindAutomatedTarget<T>()
+		{
+			return MMFeedbackTargetAcquisition.FindAutomatedTarget<T>(AutomatedTargetAcquisition, Owner, _indexInOwnerFeedbackList);
+		}
+		
+		#endregion Automation
 
 		#region Play
 
@@ -817,6 +874,42 @@ namespace MoreMountains.Feedbacks
 			}
 		}
 
+		/// <summary>
+		/// Computes the total duration of this feedback
+		/// </summary>
+		public virtual void ComputeTotalDuration()
+		{
+			if ((Timing != null) && (!Timing.ContributeToTotalDuration))
+			{
+				_totalDuration = 0f;
+				return;
+			}
+
+			float totalTime = 0f;
+
+			if (Timing == null)
+			{
+				_totalDuration = 0f;
+				return;
+			}
+
+			if (Timing.InitialDelay != 0)
+			{
+				totalTime += ApplyTimeMultiplier(Timing.InitialDelay);
+			}
+
+			totalTime += FeedbackDuration;
+
+			if (Timing.NumberOfRepeats != 0)
+			{
+				float delayBetweenRepeats = ApplyTimeMultiplier(Timing.DelayBetweenRepeats);
+
+				totalTime += (Timing.NumberOfRepeats * delayBetweenRepeats);
+			}
+				
+			_totalDuration = totalTime;
+		}
+
 		#endregion Time
 
 		#region Direction
@@ -931,6 +1024,7 @@ namespace MoreMountains.Feedbacks
 		public virtual void OnValidate()
 		{
 			InitializeCustomAttributes();
+			ComputeTotalDuration();
 		}
 
 		/// <summary>

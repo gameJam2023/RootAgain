@@ -798,6 +798,7 @@ namespace MoreMountains.Feedbacks
 				_feedbackListFeedback.RequiresSetup,
 				_feedbackListFeedback.RequiredTarget,
 				_feedbackListFeedback.DisplayColor,
+				_feedbackListFeedback.DisplayFullHeaderColor,
 				TargetMmfPlayer 
 			);
 
@@ -931,7 +932,7 @@ namespace MoreMountains.Feedbacks
 		protected virtual void InitializeFeedback(int id)
 		{
 			MMF_Feedback feedback = TargetMmfPlayer.FeedbacksList[id];
-			feedback.Initialization(TargetMmfPlayer);
+			feedback.Initialization(TargetMmfPlayer, id);
 		}
 
 		/// <summary>
