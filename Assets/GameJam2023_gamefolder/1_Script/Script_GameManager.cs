@@ -27,7 +27,7 @@ public class FarmLand
 [System.Serializable]
 public class NutrientFlask
 {
-    public GameObject nutrientFlask_model;
+    [PreviewField(75)] public GameObject nutrientFlask_model;
     public bool flaskFalling = false;
     public bool canDrag = true;
     public int index;
@@ -62,8 +62,9 @@ public class Script_GameManager : MonoBehaviour
     //public GameObject seed;
     void Start()
     {
-        for (int i = 0; i < nutrientList.Count; i++)
+        for (int i = 0; i < nutrientFlaskDataBase.NutrientFlaskDataList.Count; i++)
         {
+            nutrientList.Add(new NutrientFlask());
             nutrientList[i].nutrientFlask_model = nutrientFlaskDataBase.NutrientFlaskDataList[i].flaskModel;
             nutrientList[i].flaskFalling = nutrientFlaskDataBase.NutrientFlaskDataList[i].flaskFalling;
             nutrientList[i].index = nutrientFlaskDataBase.NutrientFlaskDataList[i].flaskIndex;

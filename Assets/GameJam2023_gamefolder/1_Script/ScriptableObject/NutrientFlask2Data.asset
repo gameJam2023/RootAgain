@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: NutrientFlask2Data
   m_EditorClassIdentifier: 
   flaskModel: {fileID: 0}
+  name: 
   flaskFalling: 0
+  canDrag: 1
   flaskIndex: 2
