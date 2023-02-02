@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0ad756dd20ca554c92ccf0495c59b82, type: 3}
+  m_Name: FarmLandDB
+  m_EditorClassIdentifier: 
+  farmLandDataList:
+  - {fileID: 11400000, guid: 91fcae401d5f58640821b73648928ab0, type: 2}
+  - {fileID: 11400000, guid: 949bd5af48531f2429a748e6928e9c49, type: 2}
+  - {fileID: 11400000, guid: 6dcdcec6ee43cb44682e55020670ee44, type: 2}
+  - {fileID: 11400000, guid: 7480f27ff28593e46961395a3facc23f, type: 2}
