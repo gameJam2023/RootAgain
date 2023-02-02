@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using Sirenix.OdinInspector;
+using MoreMountains.Feedbacks;
+
 
 [System.Serializable]
 public class FarmLand
@@ -13,29 +15,59 @@ public class FarmLand
     public int nutrientTotalCount;
     public int stageGrowingCount = 3;
     public int stageMatureCount = 5;
-    public bool isFresh = true;
-    public bool isGrowing = true;
-    public bool isMature = true;
+    public bool isPlanted = false;
+    public bool isFresh = false;
+    public bool isGrowing = false;
+    public bool isMature = false;
     public TMP_Text textNutrientTotalCount;
     public TMP_Text textCountNum;
 }
 
+[System.Serializable]
+public class NutrientFlask
+{
+    public GameObject nutrientFlask_model;
+    public int index;
+}
 public class GameManager_script : MonoBehaviour
 {
 
     public List<FarmLand> farmlandList = new List<FarmLand>();
-    public List<GameObject> nutrientList = new List<GameObject>();
+    public List<NutrientFlask> nutrientList = new List<NutrientFlask>();
+    public List<Vector3> nutrientPositionList = new List<Vector3>();//! flask position
+    public List<MMF_Player> flaskOpeningList = new List<MMF_Player>();//!MMfeedback
+    // public List<GameObject> objectGroupList = new List<GameObject>();
     //public LayerMask layerMask;
     public GameObject selectedObject = null;
     public GameObject detectedObject = null;
 
-    public float dragHeight = 0.25f;
+
+
+
+
+
+
+
+    //? select過下既高度
+    [InfoBox("因為個parent scale 乘大咗40, so child 既高度都要乘大40,child 既localPosition 會係1即係冇變, ")]
+    [InfoBox("set數值說用40黎做基準 ")]
+    [FoldoutGroup("SelectUnit")] public float dragHeight = 0.25f;
+    [FoldoutGroup("SelectUnit")] public float putDownheight;
 
     public GameObject seed;
     void Start()
     {
         seed.SetActive(true);
+        //? flask position
+        for (int i = 0; i < nutrientPositionList.Count; i++)
+        {
+            nutrientPositionList[i] = nutrientList[i].nutrientFlask_model.transform.position;
 
+        }
+        foreach (var feedBack in flaskOpeningList)
+        {
+            feedBack.PlayFeedbacks();
+        }
     }
 
     // Update is called once per frame
@@ -107,7 +139,7 @@ public class GameManager_script : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(0) && selectedObject != null) //? 放低果下
         {
-            SelectObjectPos(0f);//!放但果下
+            SelectObjectPos(putDownheight);//!放但果下
             selectedObject = null;
             Cursor.visible = true;
         }
