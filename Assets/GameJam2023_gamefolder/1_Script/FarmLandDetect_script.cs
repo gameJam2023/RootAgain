@@ -6,6 +6,7 @@ using UnityEngine;
 public class FarmLandDetect_script : MonoBehaviour
 {
     public GameObject gameManager;
+    public Seed_script seed_Script;
     public int index;
     public bool isFarmLandFilling = false; //!倒水果下
 
@@ -35,13 +36,13 @@ public class FarmLandDetect_script : MonoBehaviour
     {
         if (!isFarmLandFilling)
         {
-            if (other.gameObject.tag == "drag")
+            if (other.gameObject.tag == "isFlask" || other.gameObject.tag == "isSeed")
             {
                 this.GetComponent<MeshRenderer>().material.color = Color.green;
                 print("Stay");
                 //舊野要發光
             }
-            if (other.gameObject.tag == "drag")
+            if (other.gameObject.tag == "isFlask") //! 倒水
             {
                 if (Input.GetMouseButtonUp(0) && gameManager.GetComponent<Script_GameManager>().selectedObject != null)
                 {
@@ -50,6 +51,19 @@ public class FarmLandDetect_script : MonoBehaviour
                     // gameManager.GetComponent<GameManager_script>().nutrientList[index - 1].flaskFalling = true;
                     print("fallingTrue");
                 }
+            }
+            else if (other.gameObject.tag == "isSeed") //!種子種植
+            {
+                if (Input.GetMouseButtonUp(0) && gameManager.GetComponent<Script_GameManager>().selectedObject != null)
+                {
+                    other.gameObject.SetActive(false); //!試
+
+                    gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted = true; //種植 
+                    other.gameObject.transform.position = other.gameObject.GetComponent<Seed_script>().original_Transform.position; //!番去原本個位
+                                                                                                                                    //!播animation
+                }
+
+                //other.gameObject.SetActive(true);
             }
         }
         else
@@ -75,10 +89,10 @@ public class FarmLandDetect_script : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "drag")
-        {
-            this.GetComponent<MeshRenderer>().material.color = Color.white;
-        }
+        // if (other.gameObject.tag == "drag")
+        // {
+        this.GetComponent<MeshRenderer>().material.color = Color.white;
+        //}
     }
 
     IEnumerator fallingTest(Collider other)

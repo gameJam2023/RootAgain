@@ -18,7 +18,7 @@ public class FarmLand
     public int stageMatureCount = 5;
     public bool isPlanted = false;
     public bool isFresh = false;
-    public bool isGrowing = false;
+    // public bool isGrowing = false;
     public bool isMature = false;
     public TMP_Text textNutrientTotalCount;
     public TMP_Text textCountNum;
@@ -37,7 +37,7 @@ public class NutrientFlask
 // public class Seeds
 // {
 //     public GameObject model = null;
-//     public seedType seedType;
+//     public int index;
 //     public bool canDrag = true;
 
 // }
@@ -50,8 +50,10 @@ public class Script_GameManager : MonoBehaviour
     [FoldoutGroup("ObjectList")] public NutrientFlaskDB nutrientFlaskDataBase;
     [FoldoutGroup("ObjectList")] public List<NutrientFlask> nutrientList = new List<NutrientFlask>();
 
-    [FoldoutGroup("ObjectList")] public SeedDB seedDateBase;
-    //[FoldoutGroup("ObjectList")] public List<Seeds> seedList = new List<Seeds>();
+    [FoldoutGroup("SeedClass")] public SeedDB seedDateBase;
+    [FoldoutGroup("SeedClass")] public GameObject theOnlySeed;
+    [FoldoutGroup("SeedClass")] public bool seedCanDrag = true;
+    //  [FoldoutGroup("ObjectList")] public List<Seeds> seedList = new List<Seeds>();
 
 
     //public List<Vector3> nutrientPositionList = new List<Vector3>();//! flask position
@@ -67,9 +69,13 @@ public class Script_GameManager : MonoBehaviour
     //? select過下既高度
     [InfoBox("因為個parent scale 乘大咗40, so child 既高度都要乘大40,child 既localPosition 會係1即係冇變, set數值說用40黎做基準")]
     [InfoBox("putDownheigh 要低過基準少少,for touch 到collider ", InfoMessageType.Warning)]
-    [FoldoutGroup("SelectUnit")] public float dragHeight = 0.25f;
-    [FoldoutGroup("SelectUnit")] public float putDownOnFarmLandHeight = 40f;
-    [FoldoutGroup("SelectUnit")] public float putDownheight;
+    [FoldoutGroup("SelectUnit")] public float DragHeight_Flask;
+    [FoldoutGroup("SelectUnit")] public float putDownOnFarmLandHeight_Flask;
+    [FoldoutGroup("SelectUnit")] public float putDownheight_Flask;
+    [FoldoutGroup("SelectUnit")] public float DragHeight_Seed;
+    [FoldoutGroup("SelectUnit")] public float putDownheight_Seed;
+    [FoldoutGroup("SelectUnit")] public bool isFlask = false;
+    [FoldoutGroup("SelectUnit")] public bool isSeed = false;
 
     //public GameObject seed;
     void Start()
@@ -78,7 +84,9 @@ public class Script_GameManager : MonoBehaviour
         // {
         //     seedList.Add(new Seeds());
         //     seedList[i].model = seedDateBase.seedDatasList[i].model;
-        //     seedList[i].seedType = seedDateBase.seedDatasList[i].seedType;
+        //     seedList[i].index = seedDateBase.seedDatasList[i].index;
+
+        //     // seedList[i].seedType = seedDateBase.seedDatasList[i].seedType;
         // }
         for (int i = 0; i < nutrientFlaskDataBase.NutrientFlaskDataList.Count; i++)
         {
@@ -150,9 +158,29 @@ public class Script_GameManager : MonoBehaviour
 
     void SpawnSeed()
     {
-
+        theOnlySeed.SetActive(true);
     }
 
+    //? Object Pool
+    // void SpawnSeed()
+    // {
+    //     GameObject spawnedSeed = ObjectPool.instance.GetPooledObject();
+
+    //     if (spawnedSeed != null)
+    //     {
+    //         spawnedSeed.SetActive(true);
+    //     }
+    // }
+
+    // IEnumerator SeedGenerator()
+    // {
+    //     yield return new WaitForSeconds(1f);
+    // }
+
+    void PlantSeed(GameObject spawnedSeed)
+    {
+        spawnedSeed.SetActive(true);
+    }
     void Drag()
     {
         if (Input.GetMouseButtonDown(0)) //? select果下
@@ -163,13 +191,52 @@ public class Script_GameManager : MonoBehaviour
 
                 if (hit.collider != null)
                 {
-                    if (!hit.collider.CompareTag("drag"))
+                    // if (!hit.collider.CompareTag("drag"))  //!hit.collider.CompareTag("drag") || 
+                    // {
+                    //     print("return");
+                    //     return;
+                    // }
+                    if (hit.collider.CompareTag("Untagged"))
                     {
+                        print("return");
                         return;
                     }
+                    if (hit.collider.CompareTag("isFlask"))
+                    {
+                        isFlask = true;
+                        print("isFlask");
+                        selectedObject = hit.collider.gameObject;
+                        Cursor.visible = false;
+                    }
+                    if (hit.collider.CompareTag("isSeed"))
+                    {
+                        isSeed = true;
+                        print("isSeed");
+                        selectedObject = hit.collider.gameObject;
+                        Cursor.visible = false;
+                    }
 
-                    selectedObject = hit.collider.gameObject;
-                    Cursor.visible = false;
+                    // else if (hit.collider.CompareTag("isFlask"))
+                    // {
+                    //     isFlask = true;
+                    // }
+                    // else if (hit.collider.CompareTag("isSeed"))
+                    // {
+                    //     isSeed = true;
+                    // }
+                    // if (hit.collider.TryGetComponent(out Seed_script seed))
+                    // {
+                    //     isSeed = true;
+                    //     print("isSeed");
+                    // }
+                    // if (hit.collider.TryGetComponent(out NutrientFlaskData nutrientFlask))
+                    // {
+                    //     isFlask = true;
+                    //     print("isFlask");
+                    // }
+
+
+
 
                 }
             }
@@ -180,19 +247,38 @@ public class Script_GameManager : MonoBehaviour
             //     Cursor.visible = true;
             // }
         }
+
+
         //!上面過慮完先落呢度
-        if (selectedObject != null)
+        if (selectedObject != null && isFlask)
         {
-            SelectObjectPos(dragHeight);//!升起果下
+
+            SelectObjectPos(DragHeight_Flask);//!升起果下
         }
-        if (Input.GetMouseButtonUp(0) && selectedObject != null) //? 放低果下
+        else if (selectedObject != null && isSeed)
         {
-            if (selectedObject.GetComponent<NutrientFlask_Original>().nutrientFlaskData.flaskFalling == false)
-            {
-                SelectObjectPos(putDownheight);//!放低果下
-            }
-
-
+            SelectObjectPos(DragHeight_Seed);
+        }
+        if (Input.GetMouseButtonUp(0) && selectedObject != null && isFlask) //? 放低果下
+        {
+            // if (selectedObject.GetComponent<NutrientFlask_Original>().nutrientFlaskData.flaskFalling == false)
+            // {
+            SelectObjectPos(putDownheight_Flask);//!放低果
+            selectedObject = null;
+            Cursor.visible = true;
+            //}
+            #region reference
+            // }
+            // else if (isSeed)
+            // {
+            //     SelectObjectPos(putDownheight_Seed);
+            //     isSeed = false;
+            // }
+            #endregion
+        }
+        else if (Input.GetMouseButtonUp(0) && selectedObject != null && isSeed)
+        {
+            SelectObjectPos(putDownheight_Seed);
             selectedObject = null;
             Cursor.visible = true;
         }

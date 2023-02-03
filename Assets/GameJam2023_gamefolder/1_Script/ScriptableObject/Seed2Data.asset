@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Seed2Data
   m_EditorClassIdentifier: 
   model: {fileID: 0}
-  seedType: 0
+  index: 2

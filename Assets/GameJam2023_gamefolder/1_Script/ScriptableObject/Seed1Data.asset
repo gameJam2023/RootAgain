@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Seed1Data
   m_EditorClassIdentifier: 
   model: {fileID: 0}
-  seedType: 1
+  index: 1

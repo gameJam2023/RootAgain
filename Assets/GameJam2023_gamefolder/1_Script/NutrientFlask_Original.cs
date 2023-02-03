@@ -6,11 +6,6 @@ public class NutrientFlask_Original : MonoBehaviour
 {
 
     public NutrientFlaskData nutrientFlaskData;
-    public GameObject gameManager;
-    void Start()
-    {
-
-    }
-
+    //public GameObject gameManager;
 
 }

@@ -13,20 +13,21 @@ public class BackGround_script : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "drag")
+        if (other.tag == "isFlask")
         {
             int id = other.gameObject.GetComponent<NutrientFlask_Original>().nutrientFlaskData.flaskIndex;
             gameManager.GetComponent<Script_GameManager>().flaskOpeningList[id - 1].PlayFeedbacks();
             print("BackGround_Enter");
         }
 
-    }
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.tag == "drag")
-        {
-            print("BackGround_Stay");
-        }
 
     }
+    // private void OnTriggerStay(Collider other)
+    // {
+    //     // if (other.tag == "drag")
+    //     // {
+    //   //  print("BackGround_Stay");
+    //     // }
+
+    // }
 }

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Ground
   - drag
+  - isFlask
+  - isSeed
   layers:
   - Default
   - TransparentFX

@@ -17,12 +17,12 @@ public class ObjectPool : MonoBehaviour
     }
     private void Start()
     {
-        for (int i = 0; i < amountToPool; i++)
-        {
-            GameObject obj = Instantiate(seedPrefab);
-            obj.SetActive(false);
-            pooledObjects.Add(obj);
-        }
+        // for (int i = 0; i < amountToPool; i++)
+        // {
+        //     GameObject obj = Instantiate(seedPrefab, this.transform);
+        //     obj.SetActive(false);
+        //     pooledObjects.Add(obj);
+        // }
     }
     // Update is called once per frame
     public GameObject GetPooledObject()
