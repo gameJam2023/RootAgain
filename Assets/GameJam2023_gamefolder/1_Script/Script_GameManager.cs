@@ -33,6 +33,15 @@ public class NutrientFlask
     public int index;
 }
 
+// [System.Serializable]
+// public class Seeds
+// {
+//     public GameObject model = null;
+//     public seedType seedType;
+//     public bool canDrag = true;
+
+// }
+
 public class Script_GameManager : MonoBehaviour
 {
     [FoldoutGroup("ObjectList")] public FarmLandDB farmLandDB;
@@ -41,8 +50,11 @@ public class Script_GameManager : MonoBehaviour
     [FoldoutGroup("ObjectList")] public NutrientFlaskDB nutrientFlaskDataBase;
     [FoldoutGroup("ObjectList")] public List<NutrientFlask> nutrientList = new List<NutrientFlask>();
 
+    [FoldoutGroup("ObjectList")] public SeedDB seedDateBase;
+    //[FoldoutGroup("ObjectList")] public List<Seeds> seedList = new List<Seeds>();
 
-    public List<Vector3> nutrientPositionList = new List<Vector3>();//! flask position
+
+    //public List<Vector3> nutrientPositionList = new List<Vector3>();//! flask position
     public List<MMF_Player> flaskOpeningList = new List<MMF_Player>();//!MMfeedback
     public List<MMF_Player> flaskFillingFeedBackList = new List<MMF_Player>();//!flaskFillingAnimation
                                                                               // public List<GameObject> objectGroupList = new List<GameObject>();
@@ -62,6 +74,12 @@ public class Script_GameManager : MonoBehaviour
     //public GameObject seed;
     void Start()
     {
+        // for (int i = 0; i < seedDateBase.seedDatasList.Count; i++)
+        // {
+        //     seedList.Add(new Seeds());
+        //     seedList[i].model = seedDateBase.seedDatasList[i].model;
+        //     seedList[i].seedType = seedDateBase.seedDatasList[i].seedType;
+        // }
         for (int i = 0; i < nutrientFlaskDataBase.NutrientFlaskDataList.Count; i++)
         {
             nutrientList.Add(new NutrientFlask());
@@ -92,6 +110,8 @@ public class Script_GameManager : MonoBehaviour
             //feedBack.GetComponent<MMF_Player>().
             feedBack.PlayFeedbacks();
         }
+
+
     }
 
     // Update is called once per frame
@@ -128,7 +148,7 @@ public class Script_GameManager : MonoBehaviour
 
     }
 
-    void CancelTrigger()
+    void SpawnSeed()
     {
 
     }

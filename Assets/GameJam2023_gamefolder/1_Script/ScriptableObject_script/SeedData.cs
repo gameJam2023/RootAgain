@@ -7,9 +7,11 @@ using Sirenix.OdinInspector;
 public class SeedData : ScriptableObject
 {
     [PreviewField(150)] public GameObject model;
-    public seedType seedType;
+    public SeedType seedType;
+
+
 }
-public enum seedType
+public enum SeedType
 {
     TypeA, TypeB, TypeC
 }
