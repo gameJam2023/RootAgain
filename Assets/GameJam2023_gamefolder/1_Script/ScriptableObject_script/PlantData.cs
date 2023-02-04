@@ -13,4 +13,5 @@ public class PlantData : ScriptableObject
     [PreviewField(150)] public GameObject matureModel;
     public AudioClip matureSound;
 
+    public string modelName;
 }

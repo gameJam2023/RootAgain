@@ -7,6 +7,7 @@ using TMPro;
 using Sirenix.OdinInspector;
 using MoreMountains.Feedbacks;
 using ForMakeGameNameSpace;
+using System.Collections;
 
 [System.Serializable]
 public class FarmLand
@@ -22,7 +23,7 @@ public class FarmLand
     public int stageMatureCount = 5;
     public bool isPlanted = false;
     // public bool isFresh = false;
-    public bool isGrowing = false;
+    //public bool isGrowing = false;
     public bool isMature = false;
     public TMP_Text textNutrientTotalCount;
     public TMP_Text textCountNum;
@@ -46,6 +47,13 @@ public class Seeds
 
 }
 
+[System.Serializable]
+public class FinalPlant
+{
+    public GameObject growingModel;
+    public GameObject matureModel;
+}
+
 public class Script_GameManager : MonoBehaviour
 {
     [FoldoutGroup("ObjectList")] public FarmLandDB farmLandDB;
@@ -53,7 +61,7 @@ public class Script_GameManager : MonoBehaviour
 
     [FoldoutGroup("ObjectList")] public NutrientFlaskDB nutrientFlaskDataBase;
     [FoldoutGroup("ObjectList")] public List<NutrientFlask> nutrientList = new List<NutrientFlask>();
-    [FoldoutGroup("ObjectList")] public List<GameObject> finalCrop = new List<GameObject>();
+    [FoldoutGroup("ObjectList")] public List<FinalPlant> finalCrop = new List<FinalPlant>();
     [FoldoutGroup("ObjectList")] public List<GameObject> ObjectGroup = new List<GameObject>();
 
 
@@ -342,14 +350,35 @@ public class Script_GameManager : MonoBehaviour
     //     }
     // }
 
+    //!try this
     public void GenerateSeed()
     {
         seedList = Shuffle.list(seedList);
         Vector3 pos = new Vector3(seedSpawnPos.transform.position.x, seedSpawnPos.transform.position.y, seedSpawnPos.transform.position.z);
         Instantiate(seedList[0].model, pos, Quaternion.identity, seedParent.transform);
     }
+    IEnumerator GrowingAnimation(int id, GameObject cropPlace, Transform parent)
+    {
+        GameObject growingModel = finalCrop[id].growingModel;
+        float x = cropPlace.transform.position.x;
+        float y = cropPlace.transform.position.y;
+        float z = cropPlace.transform.position.z;
+        Vector3 pos = new Vector3(x, y, z);
+        Instantiate(growingModel, pos, Quaternion.identity, parent);
+        yield return new WaitForSeconds(1f);
+        growingModel.SetActive(false);
+
+    }
+
+
+
+    public void GrowingAni(int id, GameObject cropPlace, Transform parent)
+    {
+        StartCoroutine(GrowingAnimation(id, cropPlace, parent));
+    }
 
 }
+
 #region ReferenceCode
 
 // void RaycastMouse()
