@@ -180,7 +180,55 @@ public class FarmLandDetect_script : MonoBehaviour
                 case 1: //type A seed
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskA_num >= 3)
                     {
-
+                        //Animation Seed1A
+                    }
+                    else if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskB_num >= 3)
+                    {
+                        //Animation Seed1B
+                    }
+                    else if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskC_num >= 3)
+                    {
+                        //Animation Seed1C
+                    }
+                    else
+                    {
+                        //Animation Seed1D
+                    }
+                    break;
+                case 2: //tpye B seed
+                    if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskA_num >= 3)
+                    {
+                        //Animation Seed2A
+                    }
+                    if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskB_num >= 3)
+                    {
+                        //Animation Seed2B
+                    }
+                    if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskC_num >= 3)
+                    {
+                        //Animation Seed2C
+                    }
+                    else
+                    {
+                        //Animation Seed2D
+                    }
+                    break;
+                case 3: //type C seed
+                    if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskA_num >= 3)
+                    {
+                        //Animation Seed3A
+                    }
+                    if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskB_num >= 3)
+                    {
+                        //Animation Seed3B
+                    }
+                    if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskC_num >= 3)
+                    {
+                        //Animation Seed3C
+                    }
+                    else
+                    {
+                        //Animation Seed3D
                     }
                     break;
             }
