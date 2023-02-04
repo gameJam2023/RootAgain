@@ -196,6 +196,7 @@ public class FarmLandDetect_script : MonoBehaviour
 
         if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].nutrientTotalCount == 5)
         {
+            gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isMature = true;
             switch (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].seedTypeInLand) //? 種子type
             {
                 case 1: //type A seed
