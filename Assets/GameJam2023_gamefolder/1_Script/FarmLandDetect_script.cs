@@ -6,7 +6,8 @@ using UnityEngine;
 public class FarmLandDetect_script : MonoBehaviour
 {
     public GameObject gameManager;
-    public Seed_script seed_Script;
+    public GameObject seedObj;
+    public GameObject original_pos;
     public int index;
     public bool isFarmLandFilling = false; //!倒水果下
 
@@ -56,11 +57,9 @@ public class FarmLandDetect_script : MonoBehaviour
             {
                 if (Input.GetMouseButtonUp(0) && gameManager.GetComponent<Script_GameManager>().selectedObject != null)
                 {
-                    other.gameObject.SetActive(false); //!試
+                    StartCoroutine(BackToOriginalPos(other));
 
-                    gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted = true; //種植 
-                    other.gameObject.transform.position = other.gameObject.GetComponent<Seed_script>().original_Transform.position; //!番去原本個位
-                                                                                                                                    //!播animation
+                    //!播animation    
                 }
 
                 //other.gameObject.SetActive(true);
@@ -106,6 +105,21 @@ public class FarmLandDetect_script : MonoBehaviour
         // gameManager.GetComponent<GameManager_script>().nutrientFlaskDataBase[other.]
     }
 
+    IEnumerator BackToOriginalPos(Collider other)
+    {
+        yield return new WaitForSeconds(0.1f);
+        other.gameObject.SetActive(false); //!試
+
+        gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted = true; //種植 
+
+        float x = original_pos.transform.position.x;
+        float y = original_pos.transform.position.y;
+        float z = original_pos.transform.position.z;
+        seedObj.transform.position = new Vector3(x, y, z); //!番去原本個位 ????
+        print(seedObj.transform.position);
+        other.gameObject.SetActive(true);
+        this.GetComponent<MeshRenderer>().material.color = Color.white;
+    }
 
     // IEnumerator fallingAction(Collider other, float fallingHeight)
     // {

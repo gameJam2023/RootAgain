@@ -352,7 +352,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1121047616}
-  seed_Script: {fileID: 0}
+  seedObj: {fileID: 1328788097}
+  original_pos: {fileID: 1542729378}
   index: 1
   isFarmLandFilling: 0
 --- !u!54 &105900977
@@ -610,7 +611,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1121047616}
-  seed_Script: {fileID: 0}
+  seedObj: {fileID: 1328788097}
+  original_pos: {fileID: 1542729378}
   index: 2
   isFarmLandFilling: 0
 --- !u!54 &195146624
@@ -772,7 +774,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1121047616}
-  seed_Script: {fileID: 0}
+  seedObj: {fileID: 1328788097}
+  original_pos: {fileID: 1542729378}
   index: 4
   isFarmLandFilling: 0
 --- !u!54 &227576889
@@ -12757,7 +12760,7 @@ Transform:
   - {fileID: 1826642321}
   - {fileID: 227576884}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &758284694
 GameObject:
@@ -14137,7 +14140,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1327572502}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 40, y: 40, z: 40}
   m_ConstrainProportionsScale: 1
@@ -14149,7 +14152,7 @@ Transform:
   - {fileID: 758284695}
   - {fileID: 1919261658}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1328788097
 GameObject:
@@ -14165,7 +14168,7 @@ GameObject:
   - component: {fileID: 1328788100}
   - component: {fileID: 1328788099}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Seed
   m_TagString: isSeed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14199,7 +14202,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSeed: 1
-  original_Transform: {fileID: 1542729378}
 --- !u!135 &1328788100
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -15208,7 +15210,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1121047616}
-  seed_Script: {fileID: 0}
+  seedObj: {fileID: 1328788097}
+  original_pos: {fileID: 1542729378}
   index: 3
   isFarmLandFilling: 0
 --- !u!54 &1826642326
