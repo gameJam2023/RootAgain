@@ -21,8 +21,8 @@ public class FarmLand
     public int stageGrowingCount = 3;
     public int stageMatureCount = 5;
     public bool isPlanted = false;
-    public bool isFresh = false;
-    // public bool isGrowing = false;
+    // public bool isFresh = false;
+    public bool isGrowing = false;
     public bool isMature = false;
     public TMP_Text textNutrientTotalCount;
     public TMP_Text textCountNum;
