@@ -9,6 +9,8 @@ public class FarmLandDetect_script : MonoBehaviour
     public GameObject gameManager;
     public GameObject seedObj = null;
     public GameObject original_pos;
+    public GameObject growing_pos;
+    //public GameObject parent;
 
     public int index;
     //public bool isFarmLandFilling = false; //!倒水果下
@@ -80,6 +82,7 @@ public class FarmLandDetect_script : MonoBehaviour
                     other.gameObject.SetActive(false);
                     this.GetComponent<MeshRenderer>().material.color = Color.white;
                     gameManager.GetComponent<Script_GameManager>().GenerateSeed();
+
                     StartCoroutine(CheckEnd());
                     StartCoroutine(CheckStage());
                     //StartCoroutine(BackToOriginalPos(other));
@@ -160,6 +163,7 @@ public class FarmLandDetect_script : MonoBehaviour
             case 1:
                 gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].nutrientTotalCount++;
                 gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskA_num++;
+
                 break;
             case 2:
                 gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].nutrientTotalCount++;
@@ -197,6 +201,8 @@ public class FarmLandDetect_script : MonoBehaviour
                 case 1: //type A seed
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskA_num >= 3)
                     {
+                        // gameManager.GetComponent<Script_GameManager>().
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(0, this.growing_pos); //!gen 1A
                         //Animation Seed1A
                     }
                     else if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskB_num >= 3)

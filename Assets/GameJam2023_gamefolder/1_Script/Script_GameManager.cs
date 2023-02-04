@@ -94,7 +94,7 @@ public class Script_GameManager : MonoBehaviour
     [FoldoutGroup("SelectUnit")] public bool isFlask = false;
     [FoldoutGroup("SelectUnit")] public bool isSeed = false;
 
-
+    public Transform finalGroupParent;
 
     //public GameObject seed;
 
@@ -282,6 +282,7 @@ public class Script_GameManager : MonoBehaviour
         else if (selectedObject != null && isSeed)
         {
             SelectObjectPos(DragHeight_Seed);
+            print("dragSeed");
         }
         if (Input.GetMouseButtonUp(0) && selectedObject != null && isFlask) //? 放低果下
         {
@@ -290,6 +291,7 @@ public class Script_GameManager : MonoBehaviour
             SelectObjectPos(putDownheight_Flask);//!放低果
             selectedObject = null;
             Cursor.visible = true;
+            isFlask = false;
 
 
             //}
@@ -305,8 +307,10 @@ public class Script_GameManager : MonoBehaviour
         else if (Input.GetMouseButtonUp(0) && selectedObject != null && isSeed)
         {
             SelectObjectPos(putDownheight_Seed);
+            print("Seeddown");
             selectedObject = null;
             Cursor.visible = true;
+            isSeed = false;
         }
 
 
@@ -357,14 +361,14 @@ public class Script_GameManager : MonoBehaviour
         Vector3 pos = new Vector3(seedSpawnPos.transform.position.x, seedSpawnPos.transform.position.y, seedSpawnPos.transform.position.z);
         Instantiate(seedList[0].model, pos, Quaternion.identity, seedParent.transform);
     }
-    IEnumerator GrowingAnimation(int id, GameObject cropPlace, Transform parent)
+    IEnumerator GrowingAnimation(int id, GameObject cropPlace)
     {
         GameObject growingModel = finalCrop[id].growingModel;
         float x = cropPlace.transform.position.x;
         float y = cropPlace.transform.position.y;
         float z = cropPlace.transform.position.z;
         Vector3 pos = new Vector3(x, y, z);
-        Instantiate(growingModel, pos, Quaternion.identity, parent);
+        Instantiate(growingModel, pos, Quaternion.identity, finalGroupParent);
         yield return new WaitForSeconds(1f);
         growingModel.SetActive(false);
 
@@ -372,9 +376,9 @@ public class Script_GameManager : MonoBehaviour
 
 
 
-    public void GrowingAni(int id, GameObject cropPlace, Transform parent)
+    public void GrowingAni(int id, GameObject cropPlace)
     {
-        StartCoroutine(GrowingAnimation(id, cropPlace, parent));
+        StartCoroutine(GrowingAnimation(id, cropPlace));
     }
 
 }
