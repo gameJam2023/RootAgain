@@ -54,6 +54,8 @@ public class Script_GameManager : MonoBehaviour
     [FoldoutGroup("ObjectList")] public NutrientFlaskDB nutrientFlaskDataBase;
     [FoldoutGroup("ObjectList")] public List<NutrientFlask> nutrientList = new List<NutrientFlask>();
     [FoldoutGroup("ObjectList")] public List<GameObject> finalCrop = new List<GameObject>();
+    [FoldoutGroup("ObjectList")] public List<GameObject> ObjectGroup = new List<GameObject>();
+
 
     //[FoldoutGroup("SeedClass")] public SeedDB seedDateBase;
     [FoldoutGroup("SeedClass")] public List<Seeds> seedList = new List<Seeds>();
@@ -84,6 +86,8 @@ public class Script_GameManager : MonoBehaviour
     [FoldoutGroup("SelectUnit")] public bool isFlask = false;
     [FoldoutGroup("SelectUnit")] public bool isSeed = false;
 
+
+
     //public GameObject seed;
 
     private void Awake()
@@ -94,7 +98,7 @@ public class Script_GameManager : MonoBehaviour
         //     seedList[i].model = seedDateBase.seedDatasList[i].model;
         //     seedList[i].index = seedDateBase.seedDatasList[i].index;
         // }
-        GenerateTest();
+        GenerateSeed();
         //GenerateTheFirstSeed();
 
         for (int i = 0; i < nutrientFlaskDataBase.NutrientFlaskDataList.Count; i++)
@@ -338,12 +342,13 @@ public class Script_GameManager : MonoBehaviour
     //     }
     // }
 
-    public void GenerateTest()
+    public void GenerateSeed()
     {
         seedList = Shuffle.list(seedList);
         Vector3 pos = new Vector3(seedSpawnPos.transform.position.x, seedSpawnPos.transform.position.y, seedSpawnPos.transform.position.z);
         Instantiate(seedList[0].model, pos, Quaternion.identity, seedParent.transform);
     }
+
 }
 #region ReferenceCode
 
