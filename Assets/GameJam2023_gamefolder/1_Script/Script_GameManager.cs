@@ -360,8 +360,8 @@ public class Script_GameManager : MonoBehaviour
         seedList = Shuffle.list(seedList);
         Vector3 pos = new Vector3(seedSpawnPos.transform.position.x, seedSpawnPos.transform.position.y, seedSpawnPos.transform.position.z);
         GameObject newSeed = Instantiate(seedList[0].model, pos, Quaternion.identity, seedParent.transform);
-        Vector3 endPos = new Vector3(newSeed.transform.position.x, 60, newSeed.transform.position.z);
-        newSeed.transform.position = Vector3.Lerp(newSeed.transform.position, endPos, 0.2f);
+        Vector3 endPos = new Vector3(newSeed.transform.position.x, 10, newSeed.transform.position.z);
+        newSeed.transform.position = Vector3.Lerp(newSeed.transform.position, endPos, 1f);
     }
     IEnumerator GrowingAnimation(int id, GameObject cropPlace)
     {
