@@ -6,8 +6,9 @@ using UnityEngine;
 public class FarmLandDetect_script : MonoBehaviour
 {
     public GameObject gameManager;
-    public GameObject seedObj;
+    public GameObject seedObj = null;
     public GameObject original_pos;
+
     public int index;
     public bool isFarmLandFilling = false; //!倒水果下
 
@@ -21,15 +22,9 @@ public class FarmLandDetect_script : MonoBehaviour
         gameManager.GetComponent<Script_GameManager>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
     private void OnTriggerEnter(Collider other)
     {
-
-
 
         print("Enter");
     }
@@ -50,6 +45,16 @@ public class FarmLandDetect_script : MonoBehaviour
 
                     isFarmLandFilling = true;
                     // gameManager.GetComponent<GameManager_script>().nutrientList[index - 1].flaskFalling = true;
+                    if (!gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted) //! 沒seed
+                    {
+                        print("you should plant a seed!");
+                    }
+                    else if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted) //!kb
+                    {
+                        StartCoroutine(CheckTypeOfFlask(other));
+                        StartCoroutine(CheckStage()); // ?Check 佢個stage
+                    }
+
                     print("fallingTrue");
                 }
             }
@@ -58,10 +63,10 @@ public class FarmLandDetect_script : MonoBehaviour
                 if (Input.GetMouseButtonUp(0) && gameManager.GetComponent<Script_GameManager>().selectedObject != null)
                 {
                     StartCoroutine(BackToOriginalPos(other));
+                    //StartCoroutine(RandomSeed());
 
                     //!播animation    
                 }
-
                 //other.gameObject.SetActive(true);
             }
         }
@@ -111,7 +116,7 @@ public class FarmLandDetect_script : MonoBehaviour
         other.gameObject.SetActive(false); //!試
 
         gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted = true; //種植 
-
+        seedObj = other.gameObject;
         float x = original_pos.transform.position.x;
         float y = original_pos.transform.position.y;
         float z = original_pos.transform.position.z;
@@ -119,6 +124,48 @@ public class FarmLandDetect_script : MonoBehaviour
         print(seedObj.transform.position);
         other.gameObject.SetActive(true);
         this.GetComponent<MeshRenderer>().material.color = Color.white;
+    }
+    IEnumerator RandomSeed()
+    {
+        int randonNum = Random.Range(0, 3); //! 如有事望呢度
+                                            //seedObj = seedObj.GetComponent<Seed_script>().seedDB.seedDatasList[randonNum].model; //!轉model
+                                            // seedObj.GetComponent<Seed_script>().index = seedObj.GetComponent<Seed_script>().seedDB.seedDatasList[randonNum].index;//!轉index
+
+        yield return null;
+    }
+
+    IEnumerator CheckTypeOfFlask(Collider other)
+    {
+
+        switch (other.gameObject.GetComponent<NutrientFlask_Original>().nutrientFlaskData.flaskIndex)
+        {
+            case 1:
+                gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].nutrientTotalCount++;
+                gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskA_num++;
+                break;
+            case 2:
+                gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].nutrientTotalCount++;
+                gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskB_num++;
+                break;
+            case 3:
+                gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].nutrientTotalCount++;
+                gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskC_num++;
+                break;
+
+        }
+        print("CheckFlask");
+
+        yield return null;
+    }
+    IEnumerator CheckStage()
+    {
+
+        if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].nutrientTotalCount == 5)
+        {
+
+        }
+        print("CheckStage");
+        yield return null;
     }
 
     // IEnumerator fallingAction(Collider other, float fallingHeight)

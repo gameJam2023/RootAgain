@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SeedDB
   m_EditorClassIdentifier: 
   seedDatasList:
-  - {fileID: 11400000, guid: 8f5d45b6e71ecf842b02e181df5a33f1, type: 2}
+  - {fileID: 11400000, guid: 8caf68162a7453648921f89db932d780, type: 2}
   - {fileID: 11400000, guid: 7d84727a6a7b3c04dba714b4a71a83fa, type: 2}
   - {fileID: 11400000, guid: 75f90cb6078d9b949880f9f1e96011a3, type: 2}

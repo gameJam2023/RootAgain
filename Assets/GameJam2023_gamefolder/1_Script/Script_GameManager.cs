@@ -14,6 +14,9 @@ public class FarmLand
     public GameObject model = null;
     public int index;
     public int nutrientTotalCount;
+    public int flaskA_num = 0;
+    public int flaskB_num = 0;
+    public int flaskC_num = 0;
     public int stageGrowingCount = 3;
     public int stageMatureCount = 5;
     public bool isPlanted = false;
@@ -33,14 +36,14 @@ public class NutrientFlask
     public int index;
 }
 
-// [System.Serializable]
-// public class Seeds
-// {
-//     public GameObject model = null;
-//     public int index;
-//     public bool canDrag = true;
+[System.Serializable]
+public class Seeds
+{
+    public GameObject model = null;
+    public int index;
+    public bool canDrag = true;
 
-// }
+}
 
 public class Script_GameManager : MonoBehaviour
 {
@@ -51,7 +54,7 @@ public class Script_GameManager : MonoBehaviour
     [FoldoutGroup("ObjectList")] public List<NutrientFlask> nutrientList = new List<NutrientFlask>();
 
     [FoldoutGroup("SeedClass")] public SeedDB seedDateBase;
-    [FoldoutGroup("SeedClass")] public GameObject theOnlySeed;
+    [FoldoutGroup("SeedClass")] public List<Seeds> seedList = new List<Seeds>();
     [FoldoutGroup("SeedClass")] public bool seedCanDrag = true;
     //  [FoldoutGroup("ObjectList")] public List<Seeds> seedList = new List<Seeds>();
 
@@ -78,16 +81,17 @@ public class Script_GameManager : MonoBehaviour
     [FoldoutGroup("SelectUnit")] public bool isSeed = false;
 
     //public GameObject seed;
-    void Start()
-    {
-        // for (int i = 0; i < seedDateBase.seedDatasList.Count; i++)
-        // {
-        //     seedList.Add(new Seeds());
-        //     seedList[i].model = seedDateBase.seedDatasList[i].model;
-        //     seedList[i].index = seedDateBase.seedDatasList[i].index;
 
-        //     // seedList[i].seedType = seedDateBase.seedDatasList[i].seedType;
-        // }
+    private void Awake()
+    {
+        for (int i = 0; i < seedDateBase.seedDatasList.Count; i++)
+        {
+            seedList.Add(new Seeds());
+            seedList[i].model = seedDateBase.seedDatasList[i].model;
+            seedList[i].index = seedDateBase.seedDatasList[i].index;
+        }
+
+
         for (int i = 0; i < nutrientFlaskDataBase.NutrientFlaskDataList.Count; i++)
         {
             nutrientList.Add(new NutrientFlask());
@@ -106,6 +110,14 @@ public class Script_GameManager : MonoBehaviour
             farmlandList[i].stageGrowingCount = farmLandDB.farmLandDataList[i].stageGrowingCount;
             farmlandList[i].stageMatureCount = farmLandDB.farmLandDataList[i].stageMatureCount;
         }
+        foreach (var feedBack in flaskOpeningList)
+        {
+            //feedBack.GetComponent<MMF_Player>().
+            feedBack.PlayFeedbacks();
+        }
+    }
+    void Start()
+    {
 
         // //? flask position
         // for (int i = 0; i < nutrientPositionList.Count; i++)
@@ -113,11 +125,7 @@ public class Script_GameManager : MonoBehaviour
         //     nutrientPositionList[i] = nutrientList[i].nutrientFlask_model.transform.position;
 
         // }
-        foreach (var feedBack in flaskOpeningList)
-        {
-            //feedBack.GetComponent<MMF_Player>().
-            feedBack.PlayFeedbacks();
-        }
+
 
 
     }
@@ -158,7 +166,7 @@ public class Script_GameManager : MonoBehaviour
 
     void SpawnSeed()
     {
-        theOnlySeed.SetActive(true);
+
     }
 
     //? Object Pool
@@ -252,7 +260,6 @@ public class Script_GameManager : MonoBehaviour
         //!上面過慮完先落呢度
         if (selectedObject != null && isFlask)
         {
-
             SelectObjectPos(DragHeight_Flask);//!升起果下
         }
         else if (selectedObject != null && isSeed)
@@ -266,6 +273,8 @@ public class Script_GameManager : MonoBehaviour
             SelectObjectPos(putDownheight_Flask);//!放低果
             selectedObject = null;
             Cursor.visible = true;
+
+
             //}
             #region reference
             // }
@@ -311,6 +320,8 @@ public class Script_GameManager : MonoBehaviour
         selectedObject.transform.position = new Vector3(worldPosition.x, yPosition, worldPosition.z);
 
     }
+
+
 }
 #region ReferenceCode
 

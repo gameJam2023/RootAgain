@@ -6,8 +6,10 @@ using Sirenix.OdinInspector;
 [CreateAssetMenu(fileName = "SeedData", menuName = "gameJam2023/SeedData", order = 0)]
 public class SeedData : ScriptableObject
 {
-    [PreviewField(150)] public GameObject model;
+    [PreviewField(150)]
+    public GameObject model;
     public int index;
+
 
     //  public SeedType seedType;
 
