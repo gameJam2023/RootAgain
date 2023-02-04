@@ -474,6 +474,7 @@ MonoBehaviour:
   gameManager: {fileID: 1121047616}
   seedObj: {fileID: 0}
   original_pos: {fileID: 1542729377}
+  growing_pos: {fileID: 1451635041}
   index: 1
 --- !u!54 &105900977
 Rigidbody:
@@ -732,6 +733,7 @@ MonoBehaviour:
   gameManager: {fileID: 1121047616}
   seedObj: {fileID: 0}
   original_pos: {fileID: 1542729377}
+  growing_pos: {fileID: 2002441033}
   index: 2
 --- !u!54 &195146624
 Rigidbody:
@@ -894,6 +896,7 @@ MonoBehaviour:
   gameManager: {fileID: 1121047616}
   seedObj: {fileID: 0}
   original_pos: {fileID: 1542729377}
+  growing_pos: {fileID: 1414396792}
   index: 4
 --- !u!54 &227576889
 Rigidbody:
@@ -940,7 +943,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 29
+  m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &270924073
 GameObject:
@@ -971,7 +974,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 27
+  m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &271387050
 GameObject:
@@ -1430,7 +1433,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 33
+  m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &477089334
 PrefabInstance:
@@ -1541,7 +1544,7 @@ Transform:
   - {fileID: 998191340}
   - {fileID: 1022065082}
   m_Father: {fileID: 0}
-  m_RootOrder: 28
+  m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &511556277
 GameObject:
@@ -1686,7 +1689,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3f0dbb00086598145a2c9b271147cb06, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2007675114839669941, guid: 3f0dbb00086598145a2c9b271147cb06, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1890,6 +1893,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a90bca0e2c0fed14db82b98e8a3b61fe, type: 3}
+--- !u!1 &652807626 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a90bca0e2c0fed14db82b98e8a3b61fe, type: 3}
+  m_PrefabInstance: {fileID: 652807625}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &663295992
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14350,6 +14358,37 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 69d5d1c3acb687e44bd35e9294091a41, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a2e0e98f8756cb4496d86d94c1c90fa, type: 3}
+--- !u!1 &728359049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 728359050}
+  m_Layer: 0
+  m_Name: FinalCropParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &728359050
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728359049}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 36
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &742821295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14645,7 +14684,7 @@ Transform:
   - {fileID: 511556278}
   - {fileID: 1026568754}
   m_Father: {fileID: 0}
-  m_RootOrder: 30
+  m_RootOrder: 31
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &763758244
 PrefabInstance:
@@ -15315,7 +15354,7 @@ Transform:
   - {fileID: 1168018184}
   - {fileID: 104519460}
   m_Father: {fileID: 0}
-  m_RootOrder: 34
+  m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1022065079
 GameObject:
@@ -15519,6 +15558,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 760701020}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1039368658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1039368659}
+  m_Layer: 0
+  m_Name: GrowingPositionGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1039368659
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039368658}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1451635042}
+  - {fileID: 2002441034}
+  - {fileID: 1939651451}
+  - {fileID: 1414396793}
+  m_Father: {fileID: 0}
+  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1052717817 stripped
 GameObject:
@@ -15809,6 +15883,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f6520060ddd65d4e823d5b61c69c703, type: 3}
+--- !u!1 &1112021334 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f6520060ddd65d4e823d5b61c69c703, type: 3}
+  m_PrefabInstance: {fileID: 1112021333}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1121047616
 GameObject:
   m_ObjectHideFlags: 0
@@ -15839,7 +15918,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 26
+  m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1121047618
 MonoBehaviour:
@@ -15857,7 +15936,9 @@ MonoBehaviour:
   farmlandList: []
   nutrientFlaskDataBase: {fileID: 11400000, guid: f6e14fe535f13c2408ba43e2b094a818, type: 2}
   nutrientList: []
-  finalCrop: []
+  finalCrop:
+  - growingModel: {fileID: 652807626}
+    matureModel: {fileID: 1112021334}
   ObjectGroup: []
   seedList:
   - model: {fileID: 1328788097}
@@ -15884,6 +15965,7 @@ MonoBehaviour:
   putDownheight_Seed: 10
   isFlask: 0
   isSeed: 0
+  FinalCropParent: {fileID: 728359050}
 --- !u!1 &1168018183
 GameObject:
   m_ObjectHideFlags: 0
@@ -16355,7 +16437,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 25
+  m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1202805615
 GameObject:
@@ -17012,7 +17094,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 31
+  m_RootOrder: 32
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1328788099
 MonoBehaviour:
@@ -17207,6 +17289,68 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 5129d6b12d6869d4c86d026e1cf14ede, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 482db20dbba3f5742b24a67e2638f8d3, type: 3}
+--- !u!1 &1414396792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1414396793}
+  m_Layer: 0
+  m_Name: 'Land4GrowingPos '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1414396793
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414396792}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 77, y: 0, z: -80}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1039368659}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1451635041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1451635042}
+  m_Layer: 0
+  m_Name: Land1GrowingPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1451635042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451635041}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -87.1, y: 0, z: -89.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1039368659}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1473405028
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17847,7 +17991,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 24
+  m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1575841752 stripped
 Transform:
@@ -17964,7 +18108,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 32
+  m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1656265576 stripped
 GameObject:
@@ -18874,6 +19018,7 @@ MonoBehaviour:
   gameManager: {fileID: 1121047616}
   seedObj: {fileID: 0}
   original_pos: {fileID: 1542729377}
+  growing_pos: {fileID: 1939651450}
   index: 3
 --- !u!54 &1826642326
 Rigidbody:
@@ -19188,6 +19333,68 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nutrientFlaskData: {fileID: 11400000, guid: 48ec7cdfeeb307f49b1f3ea912f85db9, type: 2}
+--- !u!1 &1939651450
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1939651451}
+  m_Layer: 0
+  m_Name: 'Land3GrowingPos '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1939651451
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939651450}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 73, y: 0, z: 77}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1039368659}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2002441033
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2002441034}
+  m_Layer: 0
+  m_Name: 'Land2GrowingPos '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2002441034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002441033}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -90, y: 0, z: 85}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1039368659}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2008353898
 GameObject:
   m_ObjectHideFlags: 0

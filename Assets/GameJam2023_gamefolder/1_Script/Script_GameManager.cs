@@ -94,6 +94,8 @@ public class Script_GameManager : MonoBehaviour
     [FoldoutGroup("SelectUnit")] public bool isFlask = false;
     [FoldoutGroup("SelectUnit")] public bool isSeed = false;
 
+    public Transform FinalCropParent;
+
 
 
     //public GameObject seed;
@@ -355,16 +357,18 @@ public class Script_GameManager : MonoBehaviour
     {
         seedList = Shuffle.list(seedList);
         Vector3 pos = new Vector3(seedSpawnPos.transform.position.x, seedSpawnPos.transform.position.y, seedSpawnPos.transform.position.z);
-        Instantiate(seedList[0].model, pos, Quaternion.identity, seedParent.transform);
+        GameObject newSeed = Instantiate(seedList[0].model, pos, Quaternion.identity, seedParent.transform);
+        // newSeed.transform.position;
+
     }
-    IEnumerator GrowingAnimation(int id, GameObject cropPlace, Transform parent)
+    IEnumerator GrowingAnimation(int id, GameObject cropPlace)
     {
         GameObject growingModel = finalCrop[id].growingModel;
         float x = cropPlace.transform.position.x;
         float y = cropPlace.transform.position.y;
         float z = cropPlace.transform.position.z;
         Vector3 pos = new Vector3(x, y, z);
-        Instantiate(growingModel, pos, Quaternion.identity, parent);
+        Instantiate(growingModel, pos, Quaternion.identity, FinalCropParent);
         yield return new WaitForSeconds(1f);
         growingModel.SetActive(false);
 
@@ -372,9 +376,9 @@ public class Script_GameManager : MonoBehaviour
 
 
 
-    public void GrowingAni(int id, GameObject cropPlace, Transform parent)
+    public void GrowingAni(int id, GameObject cropPlace)
     {
-        StartCoroutine(GrowingAnimation(id, cropPlace, parent));
+        StartCoroutine(GrowingAnimation(id, cropPlace));
     }
 
 }
