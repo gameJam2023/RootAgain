@@ -75,6 +75,8 @@ public class FarmLandDetect_script : MonoBehaviour
                 {
                     gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted = true; //種植
                     gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].seedTypeInLand = other.gameObject.GetComponent<Seed_script>().index;
+                    other.gameObject.SetActive(false);
+                    gameManager.GetComponent<Script_GameManager>().GenerateTest();
                     //StartCoroutine(BackToOriginalPos(other));
                     //StartCoroutine(GenerateNewSeed(other));
 
@@ -175,8 +177,11 @@ public class FarmLandDetect_script : MonoBehaviour
         {
             switch (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].seedTypeInLand) //? 種子type
             {
-                case 1:
+                case 1: //type A seed
+                    if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskA_num >= 3)
+                    {
 
+                    }
                     break;
             }
         }

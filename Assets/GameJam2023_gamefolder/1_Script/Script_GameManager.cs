@@ -53,9 +53,12 @@ public class Script_GameManager : MonoBehaviour
 
     [FoldoutGroup("ObjectList")] public NutrientFlaskDB nutrientFlaskDataBase;
     [FoldoutGroup("ObjectList")] public List<NutrientFlask> nutrientList = new List<NutrientFlask>();
+    [FoldoutGroup("ObjectList")] public List<GameObject> finalCrop = new List<GameObject>();
 
     //[FoldoutGroup("SeedClass")] public SeedDB seedDateBase;
     [FoldoutGroup("SeedClass")] public List<Seeds> seedList = new List<Seeds>();
+    [FoldoutGroup("SeedClass")] public GameObject seedSpawnPos;
+    [FoldoutGroup("SeedClass")] public GameObject seedParent;
     [FoldoutGroup("SeedClass")] public bool seedCanDrag = true;
     //  [FoldoutGroup("ObjectList")] public List<Seeds> seedList = new List<Seeds>();
 
@@ -91,8 +94,8 @@ public class Script_GameManager : MonoBehaviour
         //     seedList[i].model = seedDateBase.seedDatasList[i].model;
         //     seedList[i].index = seedDateBase.seedDatasList[i].index;
         // }
-
-        GenerateTheFirstSeed();
+        GenerateTest();
+        //GenerateTheFirstSeed();
 
         for (int i = 0; i < nutrientFlaskDataBase.NutrientFlaskDataList.Count; i++)
         {
@@ -323,16 +326,23 @@ public class Script_GameManager : MonoBehaviour
 
     }
 
-    void GenerateTheFirstSeed()
+    // void GenerateTheFirstSeed()
+    // {
+    //     seedList = Shuffle.list(seedList); //Random seed
+    //     seedList[0].model.SetActive(true);
+    //     print("true");
+    //     if (seedList[0].model.activeInHierarchy == true)
+    //     {
+    //         seedList[0].model.transform.position = new Vector3(188f, 40, -188);
+    //         print("GenerateFirstSeed");
+    //     }
+    // }
+
+    public void GenerateTest()
     {
-        seedList = Shuffle.list(seedList); //Random seed
-        seedList[0].model.SetActive(true);
-        print("true");
-        if (seedList[0].model.activeInHierarchy == true)
-        {
-            seedList[0].model.transform.position = new Vector3(188f, 40, -188);
-            print("GenerateFirstSeed");
-        }
+        seedList = Shuffle.list(seedList);
+        Vector3 pos = new Vector3(seedSpawnPos.transform.position.x, seedSpawnPos.transform.position.y, seedSpawnPos.transform.position.z);
+        Instantiate(seedList[0].model, pos, Quaternion.identity, seedParent.transform);
     }
 }
 #region ReferenceCode
