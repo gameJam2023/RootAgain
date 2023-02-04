@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ForMakeGameNameSpace;
 
 
 public class FarmLandDetect_script : MonoBehaviour
@@ -20,6 +21,7 @@ public class FarmLandDetect_script : MonoBehaviour
     {
 
         gameManager.GetComponent<Script_GameManager>();
+
     }
 
 
@@ -63,11 +65,27 @@ public class FarmLandDetect_script : MonoBehaviour
         {
             if (Input.GetMouseButtonUp(0) && gameManager.GetComponent<Script_GameManager>().selectedObject != null)
             {
-                StartCoroutine(BackToOriginalPos(other));
+                if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted)
+                {
+                    print("AlreadyPlant");
+                    // StartCoroutine(BackToOriginalPos(other));
+                    //StartCoroutine(GenerateNewSeed(other));
+                }
+                else if (!gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted)
+                {
+                    gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted = true; //種植
+                    gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].seedTypeInLand = other.gameObject.GetComponent<Seed_script>().index;
+                    //StartCoroutine(BackToOriginalPos(other));
+                    //StartCoroutine(GenerateNewSeed(other));
+
+                }
+
                 //StartCoroutine(RandomSeed());
 
-                //!播animation    
+                //!播animation
             }
+
+
             //other.gameObject.SetActive(true);
         }
 
@@ -115,23 +133,16 @@ public class FarmLandDetect_script : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         other.gameObject.SetActive(false); //!試
 
-        gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted = true; //種植 
+        // gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted = true; //種植
+        // gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].seedTypeInLand = other.gameObject.GetComponent<Seed_script>().index;
         seedObj = other.gameObject;
         float x = original_pos.transform.position.x;
         float y = original_pos.transform.position.y;
         float z = original_pos.transform.position.z;
         seedObj.transform.position = new Vector3(x, y, z); //!番去原本個位 ????
-        print(seedObj.transform.position);
-        other.gameObject.SetActive(true);
+        print("BackToOriginalPos");
+        //other.gameObject.SetActive(true);
         this.GetComponent<MeshRenderer>().material.color = Color.white;
-    }
-    IEnumerator RandomSeed()
-    {
-        int randonNum = Random.Range(0, 3); //! 如有事望呢度
-                                            //seedObj = seedObj.GetComponent<Seed_script>().seedDB.seedDatasList[randonNum].model; //!轉model
-                                            // seedObj.GetComponent<Seed_script>().index = seedObj.GetComponent<Seed_script>().seedDB.seedDatasList[randonNum].index;//!轉index
-
-        yield return null;
     }
 
     IEnumerator CheckTypeOfFlask(Collider other)
@@ -162,11 +173,44 @@ public class FarmLandDetect_script : MonoBehaviour
 
         if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].nutrientTotalCount == 5)
         {
+            switch (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].seedTypeInLand) //? 種子type
+            {
+                case 1:
 
+                    break;
+            }
         }
         print("CheckStage");
         yield return null;
     }
+
+    public IEnumerator GenerateNewSeed(Collider other)
+    {
+        // gameManager.GetComponent<Script_GameManager>().seedList = Shuffle.list(gameManager.GetComponent<Script_GameManager>().seedList); //Random seed
+        gameManager.GetComponent<Script_GameManager>().seedList[0].model.SetActive(true);
+        if (gameManager.GetComponent<Script_GameManager>().seedList[0].model.activeInHierarchy == true)
+        {
+            other.gameObject.transform.position = new Vector3(188f, 12, -188);
+            print("GenerateNewSeed");
+        }
+
+        yield return new WaitForSeconds(0.2f);
+    }
+
+    // public IEnumerator GenerateNewSeed()
+    // {
+    //     gameManager.GetComponent<Script_GameManager>().seedList = Shuffle.list(gameManager.GetComponent<Script_GameManager>().seedList); //Random seed
+    //     gameManager.GetComponent<Script_GameManager>().seedList[0].model.SetActive(true);
+    //     print("true");
+    //     if (gameManager.GetComponent<Script_GameManager>().seedList[0].model.activeInHierarchy == true)
+    //     {
+    //         gameManager.GetComponent<Script_GameManager>().seedList[0].model.transform.position = new Vector3(188f, 40, -188);
+    //         print("GenerateNewSeed");
+    //     }
+
+    //     yield return null;
+    // }
+
 
     // IEnumerator fallingAction(Collider other, float fallingHeight)
     // {

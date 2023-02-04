@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 using Sirenix.OdinInspector;
 using MoreMountains.Feedbacks;
-
+using ForMakeGameNameSpace;
 
 [System.Serializable]
 public class FarmLand
@@ -14,6 +14,7 @@ public class FarmLand
     public GameObject model = null;
     public int index;
     public int nutrientTotalCount;
+    public int seedTypeInLand;
     public int flaskA_num = 0;
     public int flaskB_num = 0;
     public int flaskC_num = 0;
@@ -41,7 +42,7 @@ public class Seeds
 {
     public GameObject model = null;
     public int index;
-    public bool canDrag = true;
+    //public bool canDrag = true;
 
 }
 
@@ -53,7 +54,7 @@ public class Script_GameManager : MonoBehaviour
     [FoldoutGroup("ObjectList")] public NutrientFlaskDB nutrientFlaskDataBase;
     [FoldoutGroup("ObjectList")] public List<NutrientFlask> nutrientList = new List<NutrientFlask>();
 
-    [FoldoutGroup("SeedClass")] public SeedDB seedDateBase;
+    //[FoldoutGroup("SeedClass")] public SeedDB seedDateBase;
     [FoldoutGroup("SeedClass")] public List<Seeds> seedList = new List<Seeds>();
     [FoldoutGroup("SeedClass")] public bool seedCanDrag = true;
     //  [FoldoutGroup("ObjectList")] public List<Seeds> seedList = new List<Seeds>();
@@ -84,13 +85,14 @@ public class Script_GameManager : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < seedDateBase.seedDatasList.Count; i++)
-        {
-            seedList.Add(new Seeds());
-            seedList[i].model = seedDateBase.seedDatasList[i].model;
-            seedList[i].index = seedDateBase.seedDatasList[i].index;
-        }
+        // for (int i = 0; i < seedDateBase.seedDatasList.Count; i++)
+        // {
+        //     seedList.Add(new Seeds());
+        //     seedList[i].model = seedDateBase.seedDatasList[i].model;
+        //     seedList[i].index = seedDateBase.seedDatasList[i].index;
+        // }
 
+        GenerateTheFirstSeed();
 
         for (int i = 0; i < nutrientFlaskDataBase.NutrientFlaskDataList.Count; i++)
         {
@@ -321,7 +323,17 @@ public class Script_GameManager : MonoBehaviour
 
     }
 
-
+    void GenerateTheFirstSeed()
+    {
+        seedList = Shuffle.list(seedList); //Random seed
+        seedList[0].model.SetActive(true);
+        print("true");
+        if (seedList[0].model.activeInHierarchy == true)
+        {
+            seedList[0].model.transform.position = new Vector3(188f, 40, -188);
+            print("GenerateFirstSeed");
+        }
+    }
 }
 #region ReferenceCode
 
