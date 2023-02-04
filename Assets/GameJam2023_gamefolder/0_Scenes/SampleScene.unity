@@ -15659,7 +15659,7 @@ MonoBehaviour:
   ScaleActive: 1
   PositionWiggleProperties:
     WigglePermitted: 1
-    WiggleType: 1
+    WiggleType: 3
     UseUnscaledTime: 0
     StartWigglingAutomatically: 1
     SmoothPingPong: 1
@@ -15755,7 +15755,7 @@ MonoBehaviour:
     LimitedTimeResetValue: 1
     LimitedTimeLeft: 0
     NoiseFrequencyMin: {x: 0, y: 0, z: 0}
-    NoiseFrequencyMax: {x: 1, y: 1, z: 1}
+    NoiseFrequencyMax: {x: 10, y: 10, z: 10}
     NoiseShiftMin: {x: 0, y: 0, z: 0}
     NoiseShiftMax: {x: 0, y: 0, z: 0}
   RotationWiggleProperties:
