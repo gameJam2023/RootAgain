@@ -166,7 +166,7 @@ public class Script_GameManager : MonoBehaviour
 
     void SpawnSeed()
     {
-
+        //seedList;
     }
 
     //? Object Pool

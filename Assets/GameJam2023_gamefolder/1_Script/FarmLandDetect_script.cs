@@ -10,7 +10,7 @@ public class FarmLandDetect_script : MonoBehaviour
     public GameObject original_pos;
 
     public int index;
-    public bool isFarmLandFilling = false; //!倒水果下
+    //public bool isFarmLandFilling = false; //!倒水果下
 
 
     // public Vector3 nutrientFlaskPosition;
@@ -30,53 +30,53 @@ public class FarmLandDetect_script : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
-        if (!isFarmLandFilling)
+
+        if (other.gameObject.tag == "isFlask" || other.gameObject.tag == "isSeed")
         {
-            if (other.gameObject.tag == "isFlask" || other.gameObject.tag == "isSeed")
+            this.GetComponent<MeshRenderer>().material.color = Color.green;
+            print("Stay");
+            //舊野要發光
+        }
+        if (other.gameObject.tag == "isFlask") //! 倒水
+        {
+            if (Input.GetMouseButtonUp(0) && gameManager.GetComponent<Script_GameManager>().selectedObject != null)
             {
-                this.GetComponent<MeshRenderer>().material.color = Color.green;
-                print("Stay");
-                //舊野要發光
-            }
-            if (other.gameObject.tag == "isFlask") //! 倒水
-            {
-                if (Input.GetMouseButtonUp(0) && gameManager.GetComponent<Script_GameManager>().selectedObject != null)
+
+
+                // gameManager.GetComponent<GameManager_script>().nutrientList[index - 1].flaskFalling = true;
+                if (!gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted) //! 沒seed
+                {
+                    print("you should plant a seed!");
+                }
+                else if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted) //!kb
                 {
 
-                    isFarmLandFilling = true;
-                    // gameManager.GetComponent<GameManager_script>().nutrientList[index - 1].flaskFalling = true;
-                    if (!gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted) //! 沒seed
-                    {
-                        print("you should plant a seed!");
-                    }
-                    else if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted) //!kb
-                    {
-                        StartCoroutine(CheckTypeOfFlask(other));
-                        StartCoroutine(CheckStage()); // ?Check 佢個stage
-                    }
-
-                    print("fallingTrue");
+                    StartCoroutine(CheckTypeOfFlask(other));
+                    StartCoroutine(CheckStage()); // ?Check 佢個stage
+                    StartCoroutine(fallingTest(other)); //? falling animation 等你加
                 }
-            }
-            else if (other.gameObject.tag == "isSeed") //!種子種植
-            {
-                if (Input.GetMouseButtonUp(0) && gameManager.GetComponent<Script_GameManager>().selectedObject != null)
-                {
-                    StartCoroutine(BackToOriginalPos(other));
-                    //StartCoroutine(RandomSeed());
 
-                    //!播animation    
-                }
-                //other.gameObject.SetActive(true);
+                print("fallingTrue");
             }
         }
-        else
+        else if (other.gameObject.tag == "isSeed") //!種子種植
         {
-            //gameManager.GetComponent<GameManager_script>().farmlandList[index - 1].nutrientTotalCount++;
-            //gameManager.GetComponent<GameManager_script>().flaskFillingFeedBackList[index - 1].PlayFeedbacks();
-            StartCoroutine(fallingTest(other)); //? falling animation 等你加
+            if (Input.GetMouseButtonUp(0) && gameManager.GetComponent<Script_GameManager>().selectedObject != null)
+            {
+                StartCoroutine(BackToOriginalPos(other));
+                //StartCoroutine(RandomSeed());
 
+                //!播animation    
+            }
+            //other.gameObject.SetActive(true);
         }
+
+
+        //gameManager.GetComponent<GameManager_script>().farmlandList[index - 1].nutrientTotalCount++;
+        //gameManager.GetComponent<GameManager_script>().flaskFillingFeedBackList[index - 1].PlayFeedbacks();
+
+
+
 
 
         // if (Input.GetMouseButtonUp(0) && gameManager.GetComponent<GameManager_script>().selectedObject != null)
@@ -105,7 +105,7 @@ public class FarmLandDetect_script : MonoBehaviour
         int id = other.gameObject.GetComponent<NutrientFlask_Original>().nutrientFlaskData.flaskIndex;
         gameManager.GetComponent<Script_GameManager>().flaskOpeningList[id - 1].PlayFeedbacks();
         print("fallingAnimation");
-        this.isFarmLandFilling = false;
+        //this.isFarmLandFilling = false;
         yield return null;
         // gameManager.GetComponent<GameManager_script>().nutrientFlaskDataBase[other.]
     }
