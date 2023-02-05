@@ -386,6 +386,7 @@ public class Script_GameManager : MonoBehaviour
     IEnumerator GrowingAnimation(int id, GameObject cropPlace)
     {
         GameObject growingModel = finalCrop[id].growingModel;
+        GameObject matureModel = finalCrop[id].matureModel;
         float x = cropPlace.transform.position.x;
         float y = cropPlace.transform.position.y;
         float z = cropPlace.transform.position.z;
@@ -393,16 +394,35 @@ public class Script_GameManager : MonoBehaviour
         Instantiate(growingModel, pos, Quaternion.identity, finalGroupParent);
         yield return new WaitForSeconds(1f);
         growingModel.SetActive(false);
+        Instantiate(matureModel, pos, Quaternion.identity, finalGroupParent);
+        print("ani");
 
     }
 
+    public void GrowingTest(int id, Vector3 pos)
+    {
+        pos = new Vector3(pos.x, pos.y, pos.z);
+        Instantiate(finalCrop[id].growingModel, pos, Quaternion.identity, finalGroupParent);
+        print("Test");
+        StartCoroutine(Second());
+        Instantiate(finalCrop[id].matureModel, pos, Quaternion.identity, finalGroupParent);
 
+    }
+
+    //     public void Spawn(int id)
+    //     {
+    //  Instantiate(finalCrop[id].growingModel,)
+    //     }
 
     public void GrowingAni(int id, GameObject cropPlace)
     {
         StartCoroutine(GrowingAnimation(id, cropPlace));
     }
 
+    IEnumerator Second()
+    {
+        yield return new WaitForSeconds(1f);
+    }
 }
 
 #region ReferenceCode
