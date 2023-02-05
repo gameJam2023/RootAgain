@@ -37,7 +37,7 @@ public class FarmLandDetect_script : MonoBehaviour
 
         if (other.gameObject.tag == "isFlask" || other.gameObject.tag == "isSeed")
         {
-            this.GetComponent<MeshRenderer>().material.color = Color.green;
+            this.GetComponent<MeshRenderer>().material.color = gameManager.GetComponent<Script_GameManager>().farmLandColorStay;
             print("Stay");
             //舊野要發光
         }
@@ -71,17 +71,21 @@ public class FarmLandDetect_script : MonoBehaviour
                 {
                     print("AlreadyPlant");
                     other.gameObject.SetActive(false);
+                    this.GetComponent<MeshRenderer>().material.color = gameManager.GetComponent<Script_GameManager>().farmLandColorOriginal;
                     gameManager.GetComponent<Script_GameManager>().GenerateSeed();
+
                     // StartCoroutine(BackToOriginalPos(other));
                     //StartCoroutine(GenerateNewSeed(other));
                 }
                 else if (!gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted)
                 {
+                    print("plant");
                     gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isPlanted = true; //種植
                     gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].seedTypeInLand = other.gameObject.GetComponent<Seed_script>().index;
                     other.gameObject.SetActive(false);
-                    this.GetComponent<MeshRenderer>().material.color = Color.white;
+                    this.GetComponent<MeshRenderer>().material.color = gameManager.GetComponent<Script_GameManager>().farmLandColorOriginal;
                     gameManager.GetComponent<Script_GameManager>().GenerateSeed();
+
                     StartCoroutine(CheckEnd());
                     StartCoroutine(CheckStage());
                     //StartCoroutine(BackToOriginalPos(other));
@@ -122,7 +126,7 @@ public class FarmLandDetect_script : MonoBehaviour
     {
         // if (other.gameObject.tag == "drag")
         // {
-        this.GetComponent<MeshRenderer>().material.color = Color.white;
+        this.GetComponent<MeshRenderer>().material.color = gameManager.GetComponent<Script_GameManager>().farmLandColorOriginal;
         //}
     }
 
@@ -151,7 +155,7 @@ public class FarmLandDetect_script : MonoBehaviour
         seedObj.transform.position = new Vector3(x, y, z); //!番去原本個位 ????
         print("BackToOriginalPos");
         //other.gameObject.SetActive(true);
-        this.GetComponent<MeshRenderer>().material.color = Color.white;
+        this.GetComponent<MeshRenderer>().material.color = gameManager.GetComponent<Script_GameManager>().farmLandColorOriginal;
     }
 
     IEnumerator CheckTypeOfFlask(Collider other)
@@ -195,63 +199,74 @@ public class FarmLandDetect_script : MonoBehaviour
 
         if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].nutrientTotalCount == 5)
         {
+            gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isMature = true;
             switch (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].seedTypeInLand) //? 種子type
             {
                 case 1: //type A seed
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskA_num >= 3)
                     {
                         // gameManager.GetComponent<Script_GameManager>().
-                        gameManager.GetComponent<Script_GameManager>().
-                        GrowingAni(0, this.growing_pos); //!gen 1A
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(0, this.growing_pos); //!gen 1A
                         //Animation Seed1A
                     }
                     else if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskB_num >= 3)
                     {
                         //Animation Seed1B
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(1, this.growing_pos);
                     }
                     else if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskC_num >= 3)
                     {
                         //Animation Seed1C
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(2, this.growing_pos);
                     }
                     else
                     {
                         //Animation Seed1D
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(3, this.growing_pos);
                     }
                     break;
                 case 2: //tpye B seed
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskA_num >= 3)
                     {
                         //Animation Seed2A
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(4, this.growing_pos);
                     }
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskB_num >= 3)
                     {
                         //Animation Seed2B
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(5, this.growing_pos);
                     }
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskC_num >= 3)
                     {
                         //Animation Seed2C
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(6, this.growing_pos);
                     }
                     else
                     {
                         //Animation Seed2D
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(7, this.growing_pos);
                     }
                     break;
                 case 3: //type C seed
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskA_num >= 3)
                     {
                         //Animation Seed3A
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(8, this.growing_pos);
                     }
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskB_num >= 3)
                     {
                         //Animation Seed3B
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(9, this.growing_pos);
                     }
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskC_num >= 3)
                     {
                         //Animation Seed3C
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(10, this.growing_pos);
                     }
                     else
                     {
                         //Animation Seed3D
+                        gameManager.GetComponent<Script_GameManager>().GrowingAni(11, this.growing_pos);
                         //animation1A
                     }
                     break;
@@ -303,9 +318,3 @@ public class FarmLandDetect_script : MonoBehaviour
 //     }
 
 // }
-
-
-
-
-
-
