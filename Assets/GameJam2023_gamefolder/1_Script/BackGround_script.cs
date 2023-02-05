@@ -19,6 +19,10 @@ public class BackGround_script : MonoBehaviour
             gameManager.GetComponent<Script_GameManager>().flaskOpeningList[id - 1].PlayFeedbacks();
             print("BackGround_Enter");
         }
+        if (gameManager.GetComponent<Script_GameManager>().selectedObject != null && other.tag == "isSeed")
+        {
+            other.gameObject.SetActive(false);
+        }
 
 
     }

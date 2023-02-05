@@ -97,6 +97,8 @@ public class Script_GameManager : MonoBehaviour
     public Transform finalGroupParent;
     public int collectionCount;
     public TMP_Text collectionCount_text;
+    public Color farmLandColorStay;
+    public Color farmLandColorOriginal;
     //public GameObject seed;
 
     private void Awake()
@@ -320,7 +322,8 @@ public class Script_GameManager : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0) && selectedObject != null && isSeed)
         {
-            SelectObjectPos(putDownheight_Seed);
+            // SelectObjectPos(putDownheight_Seed);
+            selectedObject.SetActive(false);
             print("Seeddown");
             selectedObject = null;
             Cursor.visible = true;
