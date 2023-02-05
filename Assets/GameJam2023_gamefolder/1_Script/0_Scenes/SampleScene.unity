@@ -17946,7 +17946,31 @@ MonoBehaviour:
   farmlandList: []
   nutrientFlaskDataBase: {fileID: 11400000, guid: f6e14fe535f13c2408ba43e2b094a818, type: 2}
   nutrientList: []
-  finalCrop: []
+  finalCrop:
+  - growingModel: {fileID: 0}
+    matureModel: {fileID: 0}
+  - growingModel: {fileID: 0}
+    matureModel: {fileID: 0}
+  - growingModel: {fileID: 0}
+    matureModel: {fileID: 0}
+  - growingModel: {fileID: 0}
+    matureModel: {fileID: 0}
+  - growingModel: {fileID: 0}
+    matureModel: {fileID: 0}
+  - growingModel: {fileID: 0}
+    matureModel: {fileID: 0}
+  - growingModel: {fileID: 0}
+    matureModel: {fileID: 0}
+  - growingModel: {fileID: 0}
+    matureModel: {fileID: 0}
+  - growingModel: {fileID: 0}
+    matureModel: {fileID: 0}
+  - growingModel: {fileID: 0}
+    matureModel: {fileID: 0}
+  - growingModel: {fileID: 0}
+    matureModel: {fileID: 0}
+  - growingModel: {fileID: 0}
+    matureModel: {fileID: 0}
   ObjectGroup:
   - {fileID: 1551024648}
   seedList:

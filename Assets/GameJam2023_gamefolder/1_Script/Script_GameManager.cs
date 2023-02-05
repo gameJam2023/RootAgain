@@ -322,8 +322,8 @@ public class Script_GameManager : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0) && selectedObject != null && isSeed)
         {
-            // SelectObjectPos(putDownheight_Seed);
-            selectedObject.SetActive(false);
+            SelectObjectPos(putDownheight_Seed);
+            //selectedObject.SetActive(false);
             print("Seeddown");
             selectedObject = null;
             Cursor.visible = true;
