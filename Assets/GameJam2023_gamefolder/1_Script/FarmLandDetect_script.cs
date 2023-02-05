@@ -188,7 +188,7 @@ public class FarmLandDetect_script : MonoBehaviour
         {
             if (gameManager.GetComponent<Script_GameManager>().farmlandList[i].isMature == true)
             {
-                gameManager.GetComponent<Script_GameManager>().ObjectGroup[0].SetActive(true);
+                gameManager.GetComponent<Script_GameManager>().PlayEndAni();
                 print("End");
             }
         }
@@ -200,6 +200,7 @@ public class FarmLandDetect_script : MonoBehaviour
         if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].nutrientTotalCount == 5)
         {
             gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].isMature = true;
+            print("checkCrop");
             switch (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].seedTypeInLand) //? 種子type
             {
                 case 1: //type A seed
@@ -207,22 +208,31 @@ public class FarmLandDetect_script : MonoBehaviour
                     {
                         // gameManager.GetComponent<Script_GameManager>().
                         gameManager.GetComponent<Script_GameManager>().GrowingAni(0, this.growing_pos); //!gen 1A
+                        gameManager.GetComponent<Script_GameManager>().EndCount++;
+                        // gameManager.GetComponent<Script_GameManager>().
+                        //gameManager.GetComponent<Script_GameManager>().GrowingTest(0, growing_pos.transform.position);
                         //Animation Seed1A
                     }
                     else if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskB_num >= 3)
                     {
                         //Animation Seed1B
                         gameManager.GetComponent<Script_GameManager>().GrowingAni(1, this.growing_pos);
+                        gameManager.GetComponent<Script_GameManager>().EndCount++;
+                        // gameManager.GetComponent<Script_GameManager>().GrowingTest(1, growing_pos.transform.position);
                     }
                     else if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskC_num >= 3)
                     {
                         //Animation Seed1C
                         gameManager.GetComponent<Script_GameManager>().GrowingAni(2, this.growing_pos);
+                        gameManager.GetComponent<Script_GameManager>().EndCount++;
+                        //gameManager.GetComponent<Script_GameManager>().GrowingTest(2, growing_pos.transform.position);
                     }
                     else
                     {
                         //Animation Seed1D
                         gameManager.GetComponent<Script_GameManager>().GrowingAni(3, this.growing_pos);
+                        gameManager.GetComponent<Script_GameManager>().EndCount++;
+                        //gameManager.GetComponent<Script_GameManager>().GrowingTest(3, growing_pos.transform.position);
                     }
                     break;
                 case 2: //tpye B seed
@@ -230,21 +240,29 @@ public class FarmLandDetect_script : MonoBehaviour
                     {
                         //Animation Seed2A
                         gameManager.GetComponent<Script_GameManager>().GrowingAni(4, this.growing_pos);
+                        gameManager.GetComponent<Script_GameManager>().EndCount++;
+                        //gameManager.GetComponent<Script_GameManager>().GrowingTest(4, growing_pos.transform.position);
                     }
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskB_num >= 3)
                     {
                         //Animation Seed2B
                         gameManager.GetComponent<Script_GameManager>().GrowingAni(5, this.growing_pos);
+                        gameManager.GetComponent<Script_GameManager>().EndCount++;
+                        // gameManager.GetComponent<Script_GameManager>().GrowingTest(5, growing_pos.transform.position);
                     }
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskC_num >= 3)
                     {
                         //Animation Seed2C
                         gameManager.GetComponent<Script_GameManager>().GrowingAni(6, this.growing_pos);
+                        gameManager.GetComponent<Script_GameManager>().EndCount++;
+                        //gameManager.GetComponent<Script_GameManager>().GrowingTest(6, growing_pos.transform.position);
                     }
                     else
                     {
                         //Animation Seed2D
                         gameManager.GetComponent<Script_GameManager>().GrowingAni(7, this.growing_pos);
+                        gameManager.GetComponent<Script_GameManager>().EndCount++;
+                        // gameManager.GetComponent<Script_GameManager>().GrowingTest(7, growing_pos.transform.position);
                     }
                     break;
                 case 3: //type C seed
@@ -252,21 +270,29 @@ public class FarmLandDetect_script : MonoBehaviour
                     {
                         //Animation Seed3A
                         gameManager.GetComponent<Script_GameManager>().GrowingAni(8, this.growing_pos);
+                        gameManager.GetComponent<Script_GameManager>().EndCount++;
+                        //  gameManager.GetComponent<Script_GameManager>().GrowingTest(8, growing_pos.transform.position);
                     }
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskB_num >= 3)
                     {
                         //Animation Seed3B
                         gameManager.GetComponent<Script_GameManager>().GrowingAni(9, this.growing_pos);
+                        gameManager.GetComponent<Script_GameManager>().EndCount++;
+                        // gameManager.GetComponent<Script_GameManager>().GrowingTest(9, growing_pos.transform.position);
                     }
                     if (gameManager.GetComponent<Script_GameManager>().farmlandList[index - 1].flaskC_num >= 3)
                     {
                         //Animation Seed3C
                         gameManager.GetComponent<Script_GameManager>().GrowingAni(10, this.growing_pos);
+                        gameManager.GetComponent<Script_GameManager>().EndCount++;
+                        // gameManager.GetComponent<Script_GameManager>().GrowingTest(10, growing_pos.transform.position);
                     }
                     else
                     {
                         //Animation Seed3D
                         gameManager.GetComponent<Script_GameManager>().GrowingAni(11, this.growing_pos);
+                        gameManager.GetComponent<Script_GameManager>().EndCount++;
+                        // gameManager.GetComponent<Script_GameManager>().GrowingTest(11, growing_pos.transform.position);
                         //animation1A
                     }
                     break;
