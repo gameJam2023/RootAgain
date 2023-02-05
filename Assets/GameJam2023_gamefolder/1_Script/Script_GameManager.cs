@@ -95,7 +95,8 @@ public class Script_GameManager : MonoBehaviour
     [FoldoutGroup("SelectUnit")] public bool isSeed = false;
 
     public Transform finalGroupParent;
-
+    public int collectionCount;
+    public TMP_Text collectionCount_text;
     //public GameObject seed;
 
     private void Awake()
@@ -240,6 +241,19 @@ public class Script_GameManager : MonoBehaviour
                         selectedObject = hit.collider.gameObject;
                         Cursor.visible = false;
                     }
+                    if (hit.collider.CompareTag("isBook"))
+                    {
+                        for (int i = 0; i < farmlandList.Count; i++)
+                        {
+                            if (farmlandList[i].isMature)
+                            {
+                                collectionCount++;
+                            }
+                        }
+                        collectionCount_text.text = collectionCount.ToString();
+                        ObjectGroup[0].SetActive(true);
+
+                    }
 
                     // else if (hit.collider.CompareTag("isFlask"))
                     // {
@@ -315,7 +329,10 @@ public class Script_GameManager : MonoBehaviour
 
 
     }
-
+    public void CloseBookPanel()
+    {
+        ObjectGroup[0].SetActive(false);
+    }
     private RaycastHit CastRay()
     {
         Vector3 screenMousePosFar = new Vector3(
