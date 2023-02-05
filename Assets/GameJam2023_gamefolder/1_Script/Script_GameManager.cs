@@ -160,7 +160,7 @@ public class Script_GameManager : MonoBehaviour
 
     }
 
-    void DetectFarmLand()
+    void DetectBook()
     {
 
         if (Input.GetMouseButton(0) && selectedObject != null)
@@ -240,7 +240,10 @@ public class Script_GameManager : MonoBehaviour
                         selectedObject = hit.collider.gameObject;
                         Cursor.visible = false;
                     }
-
+                    if (hit.collider.CompareTag("isBook"))
+                    {
+                        ObjectGroup[0].SetActive(true);
+                    }
                     // else if (hit.collider.CompareTag("isFlask"))
                     // {
                     //     isFlask = true;

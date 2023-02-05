@@ -8,6 +8,7 @@ TagManager:
   - drag
   - isFlask
   - isSeed
+  - isBook
   layers:
   - Default
   - TransparentFX
