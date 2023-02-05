@@ -99,6 +99,8 @@ public class Script_GameManager : MonoBehaviour
     public TMP_Text collectionCount_text;
     public Color farmLandColorStay;
     public Color farmLandColorOriginal;
+    public int EndCount;
+    public MMF_Player EndFeedBack;
     //public GameObject seed;
 
     private void Awake()
@@ -155,12 +157,18 @@ public class Script_GameManager : MonoBehaviour
     {
         //RaycastMouse();
         Drag();
+        if (EndCount >= 4)
+        {
+            PlayEndAni();
+        }
+
         //DetectFarmLand();
     }
 
-    void FarmLandChecking()
+    public void PlayEndAni()
     {
-
+        EndFeedBack.PlayFeedbacks();
+        print("end");
     }
 
     void DetectFarmLand()
