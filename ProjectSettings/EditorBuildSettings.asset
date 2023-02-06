@@ -4,6 +4,9 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/GameJam2023_gamefolder/1_Script/0_Scenes/Keith_Uncle_1441.unity
+    guid: 90d94252b09317149af20bd33656914b
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: ccbab1a241b9cef4a816913adad7fa50, type: 2}

@@ -70,6 +70,8 @@ public class Script_GameManager : MonoBehaviour
     [FoldoutGroup("SeedClass")] public GameObject seedSpawnPos;
     [FoldoutGroup("SeedClass")] public GameObject seedParent;
     [FoldoutGroup("SeedClass")] public bool seedCanDrag = true;
+    [FoldoutGroup("SeedClass")] public MMF_Player seedSpawningAni;
+    [FoldoutGroup("SeedClass")] public MMF_Player seedSpawningMachingeAni;
     //  [FoldoutGroup("ObjectList")] public List<Seeds> seedList = new List<Seeds>();
 
 
@@ -100,7 +102,13 @@ public class Script_GameManager : MonoBehaviour
     public Color farmLandColorStay;
     public Color farmLandColorOriginal;
     public int EndCount;
+    public MMF_Player Middee;
     public MMF_Player EndFeedBack;
+    public int TotalEndNum;
+    public bool isEnd = false;
+    public Camera Camera;
+    public float viewwidth;
+    public float viewHi;
     //public GameObject seed;
 
     private void Awake()
@@ -157,9 +165,10 @@ public class Script_GameManager : MonoBehaviour
     {
         //RaycastMouse();
         Drag();
-        if (EndCount >= 4)
+        if (EndCount >= TotalEndNum && !isEnd)
         {
             PlayEndAni();
+            isEnd = true;
         }
 
         //DetectFarmLand();
@@ -167,9 +176,24 @@ public class Script_GameManager : MonoBehaviour
 
     public void PlayEndAni()
     {
-        EndFeedBack.PlayFeedbacks();
+        // Middee.PlayFeedbacks();
+        Camera.orthographicSize = 150;
+        StartCoroutine(ZeroPointEightsecond());
+        // EndFeedBack.PlayFeedbacks();
         print("end");
+
+        Camera.orthographicSize = 100f;
+        StartCoroutine(ZeroPointEightsecond());
+        Camera.orthographicSize = 50f;
+        StartCoroutine(ZeroPointEightsecond());
+        Camera.orthographicSize = 6000f;
+
     }
+    public IEnumerator ZeroPointEightsecond()
+    {
+        yield return new WaitForSeconds(0.8f);
+    }
+
 
     void DetectFarmLand()
     {
@@ -340,10 +364,7 @@ public class Script_GameManager : MonoBehaviour
 
 
     }
-    public void CloseBookPanel()
-    {
-        ObjectGroup[0].SetActive(false);
-    }
+
     private RaycastHit CastRay()
     {
         Vector3 screenMousePosFar = new Vector3(
@@ -385,11 +406,16 @@ public class Script_GameManager : MonoBehaviour
     //!try this
     public void GenerateSeed()
     {
+        seedParent.transform.position = new Vector3(0, 0, 0);
         seedList = Shuffle.list(seedList);
         Vector3 pos = new Vector3(seedSpawnPos.transform.position.x, seedSpawnPos.transform.position.y, seedSpawnPos.transform.position.z);
         GameObject newSeed = Instantiate(seedList[0].model, pos, Quaternion.identity, seedParent.transform);
-        Vector3 endPos = new Vector3(newSeed.transform.position.x, 10, newSeed.transform.position.z);
-        newSeed.transform.position = Vector3.Lerp(newSeed.transform.position, endPos, 1f);
+
+        seedSpawningAni.PlayFeedbacks();
+        seedSpawningMachingeAni.PlayFeedbacks();
+        // seedParent.transform.position = new Vector3(0, 0, 0);
+        //Vector3 endPos = new Vector3(newSeed.transform.position.x, 10, newSeed.transform.position.z);
+        //newSeed.transform.position = Vector3.Lerp(newSeed.transform.position, endPos, 1f);
     }
     IEnumerator GrowingAnimation(int id, GameObject cropPlace)
     {
@@ -431,6 +457,8 @@ public class Script_GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
     }
+
+
 }
 
 #region ReferenceCode
