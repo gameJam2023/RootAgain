@@ -77,6 +77,7 @@ public class Script_GameManager : MonoBehaviour
 
     //public List<Vector3> nutrientPositionList = new List<Vector3>();//! flask position
     public List<MMF_Player> flaskOpeningList = new List<MMF_Player>();//!MMfeedback
+   
     public List<MMF_Player> flaskFillingFeedBackList = new List<MMF_Player>();//!flaskFillingAnimation
                                                                               // public List<GameObject> objectGroupList = new List<GameObject>();
                                                                               //public LayerMask layerMask;
@@ -109,6 +110,8 @@ public class Script_GameManager : MonoBehaviour
     public Camera Camera;
     public float viewwidth;
     public float viewHi;
+
+   
     //public GameObject seed;
 
     private void Awake()
@@ -219,6 +222,7 @@ public class Script_GameManager : MonoBehaviour
     void SpawnSeed()
     {
         //seedList;
+
     }
 
     //? Object Pool
@@ -407,6 +411,7 @@ public class Script_GameManager : MonoBehaviour
     public void GenerateSeed()
     {
         seedParent.transform.position = new Vector3(0, 0, 0);
+        //? MMF_Player 有個setting 係比Target 的child 去control animation, 咁呢每之move呢都要set番Vector 0,0,0, 先set 000再spawn seed 先做到個效果
         seedList = Shuffle.list(seedList);
         Vector3 pos = new Vector3(seedSpawnPos.transform.position.x, seedSpawnPos.transform.position.y, seedSpawnPos.transform.position.z);
         GameObject newSeed = Instantiate(seedList[0].model, pos, Quaternion.identity, seedParent.transform);
